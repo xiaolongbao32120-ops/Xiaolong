@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณต้นทุนและกำไร</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', 'Noto Sans', sans-serif;
+            background-color: #dbe2e6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 620px;
+            background-color: #f6f3e6;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* หัวข้อใหญ่ */
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        /* ข้อความเตือนตัวเล็กมีดอกจัน */
+        .warning-text {
+            font-size: 13.5px;
+            color: #c62828;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #d1cdb8;
+            background-color: #fcfbfa;
+        }
+
+        th, td {
+            border-right: 1px solid #e1ddc7;
+            border-bottom: 1px solid #e1ddc7;
+            padding: 12px 10px;
+            text-align: center;
+            color: #333;
+            font-size: 16px;
+        }
+
+        th:last-child, td:last-child {
+            border-right: 1px solid #e1ddc7;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .bg-yellow {
+            background: linear-gradient(to bottom, #f2d154, #dfba37);
+            color: #222;
+        }
+
+        .bg-blue {
+            background: linear-gradient(to bottom, #b9daf4, #9ec4e3);
+            color: #1a365d;
+        }
+
+        .bg-empty-th {
+            background-color: #e5e3d3;
+        }
+
+        .bg-orange {
+            background-color: #f7dec5 !important;
+        }
+
+        .bg-highlight-yellow {
+            background-color: #fff4a3 !important;
+        }
+
+        input {
+            width: 85%;
+            padding: 8px 10px;
+            border: 1px solid #b0c4de;
+            border-radius: 6px;
+            text-align: right;
+            font-size: 16px;
+            font-family: inherit;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background-color: #fff;
+        }
+
+        input:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        /* ข้อความชี้บอกประเภทด้านหลัง - สีแดงตามสั่ง */
+        .label-side {
+            border: none !important;
+            background: transparent !important;
+            text-align: left;
+            padding-left: 15px;
+            font-weight: bold;
+            color: #ff0000 !important;
+            white-space: nowrap;
+        }
+
+        /* ซ่อนแถวที่ไม่จำเป็น */
+        .hidden-row {
+            display: none !important;
+        }
+
+        .btn-clear {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to bottom, #c62828, #b71c1c);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: 500;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            transition: transform 0.1s, filter 0.2s;
+        }
+
+        .btn-clear:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-clear:active {
+            transform: scale(0.99);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="header-title">คำนวณต้นทุนและกำไร</h1>
+    <div class="warning-text">คำนวณง่ายๆแค่ปลายนิ้วเรา</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="bg-yellow" style="width: 40%;">ราคาขายประกาศ</th>
+                <th class="bg-yellow" style="width: 40%;">%GP</th>
+                <th class="bg-empty-th" style="width: 20%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0"></td>
+                <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0"></td>
+                <td id="cost_result" class="bg-orange" style="font-weight: bold;">0.00</td>
+                <td class="label-side">ราคาต้นทุน</td>
+            </tr>
+            <tr class="hidden-row">
+                <td id="sale_price_1_copy">0.00</td>
+                <td id="gp_percent_copy">0.00%</td>
+                <td id="gp_value">0.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="bg-blue" style="width: 40%;">ราคาที่ต้องการขาย</th>
+                <th class="bg-blue" style="width: 40%;">ราคาต้นทุน</th>
+                <th class="bg-empty-th" style="width: 20%;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="number" id="sale_price_2" oninput="calculateTable2()" placeholder="0"></td>
+                <td id="cost_link" class="bg-orange">0.00</td>
+                <td id="margin_percent_result" class="bg-highlight-yellow" style="font-weight: bold;">0.00%</td>
+                <td class="label-side">%GP</td>
+            </tr>
+            <tr class="hidden-row">
+                <td id="profit_diff">0.00</td>
+                <td id="profit_diff_copy">0.00</td>
+                <td id="sale_price_2_copy">0.00</td>
+            </tr>
+            <tr class="hidden-row">
+                <td id="profit_percent_base">0.00</td>
+                <td id="profit_diff_final">0.00</td>
+                <td>100</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
+</div>
+
+<script>
+function calculateTable1() {
+    let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
+    let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
+    let gpValue = salePrice1 * (gpPercent / 100);
+    let cost = salePrice1 - gpValue;
+
+    document.getElementById('gp_value').innerText = gpValue.toFixed(2);
+    document.getElementById('sale_price_1_copy').innerText = salePrice1.toFixed(2);
+    document.getElementById('gp_percent_copy').innerText = gpPercent.toFixed(2) + "%";
+    document.getElementById('cost_result').innerText = cost.toFixed(2);
+    document.getElementById('cost_link').innerText = cost.toFixed(2);
+
+    calculateTable2();
+}
+
+function calculateTable2() {
+    let salePrice2 = parseFloat(document.getElementById('sale_price_2').value) || 0;
+    let cost = parseFloat(document.getElementById('cost_link').innerText) || 0;
+    let profitDiff = salePrice2 - cost;
+    let marginPercent = 0;
+
+    if (salePrice2 !== 0) {
+        marginPercent = (profitDiff / salePrice2) * 100;
+    } else if (salePrice2 === 0 && cost !== 0) {
+        marginPercent = -100;
+    }
+
+    document.getElementById('profit_diff').innerText = profitDiff.toFixed(2);
+    document.getElementById('profit_diff_copy').innerText = profitDiff.toFixed(2);
+    document.getElementById('sale_price_2_copy').innerText = salePrice2.toFixed(2);
+    
+    let baseShare = salePrice2 !== 0 ? (profitDiff / salePrice2) : 0;
+    document.getElementById('profit_percent_base').innerText = baseShare.toFixed(3);
+    
+    document.getElementById('profit_diff_final').innerText = profitDiff.toFixed(2);
+    document.getElementById('margin_percent_result').innerText = marginPercent.toFixed(2) + "%";
+}
+
+function clearAll() {
+    document.getElementById('sale_price_1').value = '';
+    document.getElementById('gp_percent').value = '';
+    document.getElementById('sale_price_2').value = '';
+    calculateTable1();
+}
+</script>
+
+</body>
+</html>
