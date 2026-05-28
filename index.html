@@ -72,7 +72,7 @@
         }
 
         th:last-child, td:last-child {
-            border-right: 1px solid #e1ddc7;
+            border-right: none; /* เอาเส้นขอบขวาสุดออก */
         }
 
         tr:last-child td {
@@ -94,8 +94,11 @@
             color: #1a365d;
         }
 
+        /* หัวตารางฝั่งขวา สีเทาอ่อน ตัวหนังสือสีดำปกติ */
         .bg-empty-th {
             background-color: #e5e3d3;
+            color: #000000 !important; 
+            font-weight: bold;
         }
 
         .bg-orange {
@@ -123,16 +126,6 @@
         input:focus {
             border-color: #4a90e2;
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
-        }
-
-        .label-side {
-            border: none !important;
-            background: transparent !important;
-            text-align: left;
-            padding-left: 15px;
-            font-weight: bold;
-            color: #ff0000 !important;
-            white-space: nowrap;
         }
 
         .hidden-row {
@@ -178,15 +171,13 @@
             <tr>
                 <th class="bg-yellow" style="width: 40%;">ราคาขายประกาศ</th>
                 <th class="bg-yellow" style="width: 40%;">%GP</th>
-                <th class="bg-empty-th" style="width: 20%;"></th>
-            </tr>
+                <th class="bg-empty-th" style="width: 20%;">ราคาต้นทุน</th> </tr>
         </thead>
         <tbody>
             <tr>
                 <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0" min="0"></td>
                 <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0" min="0"></td>
                 <td id="cost_result" class="bg-orange" style="font-weight: bold;">0.00</td>
-                <td class="label-side">ราคาต้นทุน</td>
             </tr>
             <tr class="hidden-row">
                 <td id="sale_price_1_copy">0.00</td>
@@ -201,15 +192,13 @@
             <tr>
                 <th class="bg-blue" style="width: 40%;">ราคาที่ต้องการขาย</th>
                 <th class="bg-blue" style="width: 40%;">ราคาต้นทุน</th>
-                <th class="bg-empty-th" style="width: 20%;"></th>
-            </tr>
+                <th class="bg-empty-th" style="width: 20%;">%GP</th> </tr>
         </thead>
         <tbody>
             <tr>
                 <td><input type="number" id="sale_price_2" oninput="calculateTable2()" placeholder="0" min="0"></td>
                 <td id="cost_link" class="bg-orange">0.00</td>
                 <td id="margin_percent_result" class="bg-highlight-yellow" style="font-weight: bold;">0.00%</td>
-                <td class="label-side">%GP</td>
             </tr>
             <tr class="hidden-row">
                 <td id="profit_diff">0.00</td>
@@ -256,7 +245,7 @@ function calculateTable2() {
     let profitDiff = salePrice2 - cost;
     let marginPercent = 0;
 
-    // ปรับปรุงเงื่อนไขป้องกันการหารด้วยศูนย์ (Division by Zero)
+    // ป้องกันการหารด้วยศูนย์
     if (salePrice2 !== 0) {
         marginPercent = (profitDiff / salePrice2) * 100;
     } else if (salePrice2 === 0 && cost !== 0) {
@@ -275,28 +264,23 @@ function calculateTable2() {
     
     document.getElementById('profit_diff_final').innerText = profitDiff.toFixed(2);
     
-    // แสดงผลเปอร์เซ็นต์กำไร
+    // แสดงผลเปอร์เซ็นต์กำไรและการเปลี่ยนสีตัวเลขตามเงื่อนไข
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
-    // เงื่อนไขเปลี่ยนสี: ถ้ากำไรเป็นบวก (หรือเท่ากับ 0) ให้เป็นสีเขียว ถ้าติดลบให้เป็นสีแดง
     if (marginPercent >= 0) {
-        marginElement.style.color = "#2e7d32"; // สีเขียวเข้ม
+        marginElement.style.color = "#2e7d32"; // กำไรบวก/เท่าเดิม -> เขียวเข้ม
     } else {
-        marginElement.style.color = "#c62828"; // สีแดง
+        marginElement.style.color = "#c62828"; // กำไรติดลบ -> แดง
     }
 }
 
 function clearAll() {
-    // ล้างค่าใน Input ทั้งหมด
     document.getElementById('sale_price_1').value = '';
     document.getElementById('gp_percent').value = '';
     document.getElementById('sale_price_2').value = '';
     
-    // สั่งคำนวณใหม่เพื่อเคลียร์ตัวเลขผลลัพธ์ให้กลับเป็น 0.00
     calculateTable1();
-    
-    // เลื่อนเคอร์เซอร์ไปโฟกัสที่ช่องแรกทันที
     document.getElementById('sale_price_1').focus();
 }
 </script>
