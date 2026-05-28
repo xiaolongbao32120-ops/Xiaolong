@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="mon8888.png"type="image/jpeg">
+    <link rel="icon" href="mon8888.png" type="image/jpeg">
     
     <style>
         body {
@@ -260,7 +260,6 @@ function calculateTable2() {
     if (salePrice2 !== 0) {
         marginPercent = (profitDiff / salePrice2) * 100;
     } else if (salePrice2 === 0 && cost !== 0) {
-        // หากต้องการขาย 0 บาทแต่มีต้นทุนจริง ถือว่าติดลบสูงสุด (-100% หรือตามโครงสร้างธุรกิจของคุณ)
         marginPercent = -100; 
     } else {
         marginPercent = 0;
@@ -275,7 +274,17 @@ function calculateTable2() {
     document.getElementById('profit_percent_base').innerText = baseShare.toFixed(3);
     
     document.getElementById('profit_diff_final').innerText = profitDiff.toFixed(2);
-    document.getElementById('margin_percent_result').innerText = marginPercent.toFixed(2) + "%";
+    
+    // แสดงผลเปอร์เซ็นต์กำไร
+    let marginElement = document.getElementById('margin_percent_result');
+    marginElement.innerText = marginPercent.toFixed(2) + "%";
+
+    // เงื่อนไขเปลี่ยนสี: ถ้ากำไรเป็นบวก (หรือเท่ากับ 0) ให้เป็นสีเขียว ถ้าติดลบให้เป็นสีแดง
+    if (marginPercent >= 0) {
+        marginElement.style.color = "#2e7d32"; // สีเขียวเข้ม
+    } else {
+        marginElement.style.color = "#c62828"; // สีแดง
+    }
 }
 
 function clearAll() {
@@ -287,7 +296,7 @@ function clearAll() {
     // สั่งคำนวณใหม่เพื่อเคลียร์ตัวเลขผลลัพธ์ให้กลับเป็น 0.00
     calculateTable1();
     
-    // เลื่อนเคอร์เซอร์ไปโฟกัสที่ช่องแรกทันที (เพิ่มเพื่อความสะดวกของผู้ใช้)
+    // เลื่อนเคอร์เซอร์ไปโฟกัสที่ช่องแรกทันที
     document.getElementById('sale_price_1').focus();
 }
 </script>
