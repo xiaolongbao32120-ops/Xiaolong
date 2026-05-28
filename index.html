@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -26,8 +27,9 @@
             --input-bg: #ffffff;
             --input-text: #333333;
             
-            --bg-orange: #f7dec5;
-            --bg-highlight-yellow: #fff4a3;
+            /* สีช่องผลลัพธ์ปรับเป็นสีขาวปกติ */
+            --bg-result-white: #fcfbfa; 
+            
             --bg-empty-th: #e5e3d3;
             --btn-toggle-color: #2c3e50;
         }
@@ -45,8 +47,9 @@
             --input-bg: #1a2129;
             --input-text: #ffffff;
             
-            --bg-orange: #5c3a21;
-            --bg-highlight-yellow: #524811;
+            /* ในโหมดมืด ช่องผลลัพธ์จะเปลี่ยนเป็นสีมืดตามตารางเพื่อความสบายตา */
+            --bg-result-white: #242c35; 
+            
             --bg-empty-th: #2d3742;
             --btn-toggle-color: #f2d154;
         }
@@ -66,7 +69,7 @@
         }
 
         .container {
-            position: relative; /* สำหรับจัดตำแหน่งปุ่มพระจันทร์ */
+            position: relative;
             width: 100%;
             max-width: 620px;
             background-color: var(--bg-container);
@@ -77,7 +80,6 @@
             transition: background-color 0.3s ease;
         }
 
-        /* ปุ่มสลับโหมดดวงอาทิตย์ / พระจันทร์ บนเว็บเพจ */
         .mode-toggle {
             position: absolute;
             top: 25px;
@@ -165,12 +167,9 @@
             font-weight: bold;
         }
 
-        .bg-orange {
-            background-color: var(--bg-orange) !important;
-        }
-
-        .bg-highlight-yellow {
-            background-color: var(--bg-highlight-yellow) !important;
+        /* คลาสสไตล์ช่องผลลัพธ์เป็นสีขาวปกติ */
+        .bg-result-normal {
+            background-color: var(--bg-result-white) !important;
         }
 
         input {
@@ -259,7 +258,7 @@
             <tr>
                 <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0" min="0"></td>
                 <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0" min="0"></td>
-                <td id="cost_result" class="bg-orange" style="font-weight: bold;">0.00</td>
+                <td id="cost_result" class="bg-result-normal" style="font-weight: bold;">0.00</td>
             </tr>
             <tr class="hidden-row">
                 <td id="sale_price_1_copy">0.00</td>
@@ -280,8 +279,8 @@
         <tbody>
             <tr>
                 <td><input type="number" id="sale_price_2" oninput="calculateTable2()" placeholder="0" min="0"></td>
-                <td id="cost_link" class="bg-orange">0.00</td>
-                <td id="margin_percent_result" class="bg-highlight-yellow" style="font-weight: bold;">0.00%</td>
+                <td id="cost_link" class="bg-result-normal">0.00</td>
+                <td id="margin_percent_result" class="bg-result-normal" style="font-weight: bold;">0.00%</td>
             </tr>
             <tr class="hidden-row">
                 <td id="profit_diff">0.00</td>
@@ -303,19 +302,18 @@
 </div>
 
 <script>
-// ฟังก์ชันสำหรับสลับโหมดมืด/สว่างเมื่อคลิกปุ่ม
 function toggleMode() {
     const body = document.body;
     const modeBtn = document.getElementById('modeBtn');
     
     body.classList.toggle('dark');
     
-    // เปลี่ยนไอคอนตามโหมด
     if (body.classList.contains('dark')) {
         modeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
     } else {
         modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
+    calculateTable2(); // รีเฟรชสีตัวอักษรหลังจากสลับโหมด
 }
 
 function calculateTable1() {
@@ -362,6 +360,7 @@ function calculateTable2() {
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
+    // ปรับเฉพาะสีตัวเลขให้เด่นชัดตามโหมดมืด/สว่าง
     const isDark = document.body.classList.contains('dark');
     if (marginPercent >= 0) {
         marginElement.style.color = isDark ? "#4caf50" : "#2e7d32";
@@ -383,7 +382,6 @@ function captureScreen() {
     const targetElement = document.getElementById('capture-area');
     const currentContainerBg = window.getComputedStyle(targetElement).backgroundColor;
 
-    // ซ่อนปุ่มพระจันทร์ชั่วคราวก่อนกดเซฟรูปภาพ เพื่อไม่ให้ติดไปในรูปภาพผลลัพธ์
     const modeBtn = document.getElementById('modeBtn');
     modeBtn.style.visibility = 'hidden';
 
@@ -392,7 +390,6 @@ function captureScreen() {
         backgroundColor: currentContainerBg, 
         useCORS: true
     }).then(canvas => {
-        // แอบแสดงปุ่มพระจันทร์กลับมาเหมือนเดิมหลังจากจับภาพเสร็จ
         modeBtn.style.visibility = 'visible';
 
         const imageUri = canvas.toDataURL("image/png");
