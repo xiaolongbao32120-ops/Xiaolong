@@ -13,9 +13,49 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
+        /* --- โหมดปกติ (Light Mode) --- */
+        :root {
+            --bg-body: #dbe2e6;
+            --bg-container: #f6f3e6;
+            --text-main: #2c3e50;
+            --text-muted: #333333;
+            --table-border: #d1cdb8;
+            --table-cell-border: #e1ddc7;
+            --table-bg: #fcfbfa;
+            --input-border: #b0c4de;
+            --input-bg: #ffffff;
+            --input-text: #333333;
+            
+            /* สีพิเศษคงเดิมเพื่อความสวยงาม */
+            --bg-orange: #f7dec5;
+            --bg-highlight-yellow: #fff4a3;
+            --bg-empty-th: #e5e3d3;
+        }
+
+        /* --- โหมดมืดอัตโนมัติ (Dark Mode เมื่อเปิดโหมดพระจันทร์ในระบบเครื่อง) --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #12181f;
+                --bg-container: #1e252b;
+                --text-main: #ffffff;
+                --text-muted: #e0e0e0;
+                --table-border: #454f5b;
+                --table-cell-border: #38424d;
+                --table-bg: #242c35;
+                --input-border: #4f5b66;
+                --input-bg: #1a2129;
+                --input-text: #ffffff;
+                
+                /* ปรับสีไฮไลท์ในโหมดมืดให้อ่านง่ายสบายตาขึ้น */
+                --bg-orange: #5c3a21;
+                --bg-highlight-yellow: #524811;
+                --bg-empty-th: #2d3742;
+            }
+        }
+
         body {
             font-family: 'Noto Sans Thai', 'Noto Sans', sans-serif;
-            background-color: #dbe2e6;
+            background-color: var(--bg-body);
             margin: 0;
             padding: 40px 20px;
             display: flex;
@@ -24,22 +64,24 @@
             justify-content: center;
             min-height: 100vh;
             box-sizing: border-box;
+            transition: background-color 0.3s ease;
         }
 
         .container {
             width: 100%;
             max-width: 620px;
-            background-color: #f6f3e6;
+            background-color: var(--bg-container);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background-color 0.3s ease;
         }
 
         .header-title {
             font-size: 28px;
             font-weight: 700;
-            color: #2c3e50;
+            color: var(--text-main);
             text-align: center;
             margin-top: 0;
             margin-bottom: 5px;
@@ -47,7 +89,7 @@
 
         .warning-text {
             font-size: 13.5px;
-            color: #c62828;
+            color: #ff5252;
             text-align: center;
             font-weight: 500;
             margin-bottom: 25px;
@@ -60,16 +102,16 @@
             margin-bottom: 25px;
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid #d1cdb8;
-            background-color: #fcfbfa;
+            border: 1px solid var(--table-border);
+            background-color: var(--table-bg);
         }
 
         th, td {
-            border-right: 1px solid #e1ddc7;
-            border-bottom: 1px solid #e1ddc7;
+            border-right: 1px solid var(--table-cell-border);
+            border-bottom: 1px solid var(--table-cell-border);
             padding: 12px 10px;
             text-align: center;
-            color: #333;
+            color: var(--text-muted);
             font-size: 16px;
         }
 
@@ -97,43 +139,42 @@
         }
 
         .bg-empty-th {
-            background-color: #e5e3d3;
-            color: #000000 !important; 
+            background-color: var(--bg-empty-th);
+            color: var(--text-main) !important; 
             font-weight: bold;
         }
 
         .bg-orange {
-            background-color: #f7dec5 !important;
+            background-color: var(--bg-orange) !important;
         }
 
         .bg-highlight-yellow {
-            background-color: #fff4a3 !important;
+            background-color: var(--bg-highlight-yellow) !important;
         }
 
         input {
             width: 85%;
             padding: 8px 10px;
-            border: 1px solid #b0c4de;
+            border: 1px solid var(--input-border);
             border-radius: 6px;
             text-align: right;
             font-size: 16px;
             font-family: inherit;
-            color: #333;
+            color: var(--input-text);
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            background-color: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s;
+            background-color: var(--input-bg);
         }
 
         input:focus {
             border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
         }
 
         .hidden-row {
             display: none !important;
         }
 
-        /* ส่วนควบคุมปุ่มกดให้อยู่แถวเดียวกัน */
         .button-group {
             display: flex;
             gap: 15px;
@@ -154,7 +195,7 @@
             font-family: inherit;
             cursor: pointer;
             font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             transition: transform 0.1s, filter 0.2s;
         }
 
@@ -281,10 +322,11 @@ function calculateTable2() {
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
+    // ปรับสีตัวเลข %GP ให้มองเห็นชัดเจนขึ้นทั้งโหมดมืดและสว่าง
     if (marginPercent >= 0) {
-        marginElement.style.color = "#2e7d32";
+        marginElement.style.color = "#4caf50"; // สีเขียวสว่างขึ้นเล็กน้อยสำหรับโหมดมืด
     } else {
-        marginElement.style.color = "#c62828";
+        marginElement.style.color = "#f44336"; // สีแดงสว่างขึ้นเล็กน้อยสำหรับโหมดมืด
     }
 }
 
@@ -297,25 +339,23 @@ function clearAll() {
     document.getElementById('sale_price_1').focus();
 }
 
-// ฟังก์ชันแปลงพื้นที่หน้าจอให้เป็นรูปภาพแล้วเด้งดาวน์โหลดอัตโนมัติ
 function captureScreen() {
     const targetElement = document.getElementById('capture-area');
     
-    // ตั้งค่าให้รูปภาพที่แปลงออกมามีความคมชัดสูง (Scale 2 เท่า)
+    // ดึงค่าสีกรอบปัจจุบัน (ตรวจจับว่าเป็นโหมดมืดหรือสว่าง) เพื่อให้รูปที่เซฟออกมาสีไม่เพี้ยน
+    const currentContainerBg = window.getComputedStyle(targetElement).backgroundColor;
+
     html2canvas(targetElement, {
         scale: 2, 
-        backgroundColor: "#dbe2e6", // รักษาสีพื้นหลังภายนอกให้สวยงาม
+        backgroundColor: currentContainerBg, 
         useCORS: true
     }).then(canvas => {
-        // แปลงแคนวาสเป็น URL รูปภาพแบบ PNG
         const imageUri = canvas.toDataURL("image/png");
         
-        // สร้างลิงก์เสมือนเพื่อสั่งดาวน์โหลดลงเครื่องทันที
         const downloadLink = document.createElement('a');
         downloadLink.href = imageUri;
-        downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png'; // ตั้งชื่อไฟล์รูปภาพ
+        downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png';
         
-        // สั่งให้ระบบเริ่มดาวน์โหลดไฟล์
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
