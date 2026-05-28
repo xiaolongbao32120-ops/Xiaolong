@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="mon8888.png" type="image/jpeg">
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         body {
             font-family: 'Noto Sans Thai', 'Noto Sans', sans-serif;
@@ -72,7 +74,7 @@
         }
 
         th:last-child, td:last-child {
-            border-right: none; /* เอาเส้นขอบขวาสุดออก */
+            border-right: none;
         }
 
         tr:last-child td {
@@ -94,7 +96,6 @@
             color: #1a365d;
         }
 
-        /* หัวตารางฝั่งขวา สีเทาอ่อน ตัวหนังสือสีดำปกติ */
         .bg-empty-th {
             background-color: #e5e3d3;
             color: #000000 !important; 
@@ -132,14 +133,20 @@
             display: none !important;
         }
 
-        .btn-clear {
+        /* ส่วนควบคุมปุ่มกดให้อยู่แถวเดียวกัน */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            width: 100%;
+            flex: 1;
             padding: 14px;
-            background: linear-gradient(to bottom, #c62828, #b71c1c);
             color: white;
             border: none;
             border-radius: 8px;
@@ -151,18 +158,26 @@
             transition: transform 0.1s, filter 0.2s;
         }
 
-        .btn-clear:hover {
+        .btn:hover {
             filter: brightness(1.1);
         }
 
-        .btn-clear:active {
+        .btn:active {
             transform: scale(0.99);
+        }
+
+        .btn-clear {
+            background: linear-gradient(to bottom, #c62828, #b71c1c);
+        }
+
+        .btn-capture {
+            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="capture-area">
     <h1 class="header-title">คำนวณต้นทุนและกำไร</h1>
     <div class="warning-text">คำนวณง่ายๆแค่ปลายนิ้วเรา</div>
 
@@ -171,7 +186,8 @@
             <tr>
                 <th class="bg-yellow" style="width: 40%;">ราคาขายประกาศ</th>
                 <th class="bg-yellow" style="width: 40%;">%GP</th>
-                <th class="bg-empty-th" style="width: 20%;">ราคาต้นทุน</th> </tr>
+                <th class="bg-empty-th" style="width: 20%;">ราคาต้นทุน</th>
+            </tr>
         </thead>
         <tbody>
             <tr>
@@ -192,7 +208,8 @@
             <tr>
                 <th class="bg-blue" style="width: 40%;">ราคาที่ต้องการขาย</th>
                 <th class="bg-blue" style="width: 40%;">ราคาต้นทุน</th>
-                <th class="bg-empty-th" style="width: 20%;">%GP</th> </tr>
+                <th class="bg-empty-th" style="width: 20%;">%GP</th>
+            </tr>
         </thead>
         <tbody>
             <tr>
@@ -213,7 +230,10 @@
         </tbody>
     </table>
 
-    <button class="btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
+    <div class="button-group">
+        <button class="btn btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="btn btn-capture" onclick="captureScreen()">บันทึกเป็นรูปภาพ <i class="fa-solid fa-camera"></i></button>
+    </div>
 </div>
 
 <script>
@@ -221,20 +241,16 @@ function calculateTable1() {
     let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
     let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
     
-    // คำนวณราคาต้นทุน
     let gpValue = salePrice1 * (gpPercent / 100);
     let cost = salePrice1 - gpValue;
 
-    // แสดงผลลัพธ์ตารางที่ 1
     document.getElementById('gp_value').innerText = gpValue.toFixed(2);
     document.getElementById('sale_price_1_copy').innerText = salePrice1.toFixed(2);
     document.getElementById('gp_percent_copy').innerText = gpPercent.toFixed(2) + "%";
     document.getElementById('cost_result').innerText = cost.toFixed(2);
     
-    // ส่งค่าต้นทุนไปที่ตารางที่ 2
     document.getElementById('cost_link').innerText = cost.toFixed(2);
 
-    // สั่งคำนวณตารางที่ 2 ใหม่ตามไปด้วย
     calculateTable2();
 }
 
@@ -245,7 +261,6 @@ function calculateTable2() {
     let profitDiff = salePrice2 - cost;
     let marginPercent = 0;
 
-    // ป้องกันการหารด้วยศูนย์
     if (salePrice2 !== 0) {
         marginPercent = (profitDiff / salePrice2) * 100;
     } else if (salePrice2 === 0 && cost !== 0) {
@@ -254,7 +269,6 @@ function calculateTable2() {
         marginPercent = 0;
     }
 
-    // อัปเดต UI ตารางที่ 2
     document.getElementById('profit_diff').innerText = profitDiff.toFixed(2);
     document.getElementById('profit_diff_copy').innerText = profitDiff.toFixed(2);
     document.getElementById('sale_price_2_copy').innerText = salePrice2.toFixed(2);
@@ -264,14 +278,13 @@ function calculateTable2() {
     
     document.getElementById('profit_diff_final').innerText = profitDiff.toFixed(2);
     
-    // แสดงผลเปอร์เซ็นต์กำไรและการเปลี่ยนสีตัวเลขตามเงื่อนไข
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
     if (marginPercent >= 0) {
-        marginElement.style.color = "#2e7d32"; // กำไรบวก/เท่าเดิม -> เขียวเข้ม
+        marginElement.style.color = "#2e7d32";
     } else {
-        marginElement.style.color = "#c62828"; // กำไรติดลบ -> แดง
+        marginElement.style.color = "#c62828";
     }
 }
 
@@ -282,6 +295,31 @@ function clearAll() {
     
     calculateTable1();
     document.getElementById('sale_price_1').focus();
+}
+
+// ฟังก์ชันแปลงพื้นที่หน้าจอให้เป็นรูปภาพแล้วเด้งดาวน์โหลดอัตโนมัติ
+function captureScreen() {
+    const targetElement = document.getElementById('capture-area');
+    
+    // ตั้งค่าให้รูปภาพที่แปลงออกมามีความคมชัดสูง (Scale 2 เท่า)
+    html2canvas(targetElement, {
+        scale: 2, 
+        backgroundColor: "#dbe2e6", // รักษาสีพื้นหลังภายนอกให้สวยงาม
+        useCORS: true
+    }).then(canvas => {
+        // แปลงแคนวาสเป็น URL รูปภาพแบบ PNG
+        const imageUri = canvas.toDataURL("image/png");
+        
+        // สร้างลิงก์เสมือนเพื่อสั่งดาวน์โหลดลงเครื่องทันที
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageUri;
+        downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png'; // ตั้งชื่อไฟล์รูปภาพ
+        
+        // สั่งให้ระบบเริ่มดาวน์โหลดไฟล์
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
 }
 </script>
 
