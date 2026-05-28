@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
-        /* --- โหมดปกติ (Light Mode) --- */
+        /* --- ตั้งค่าตัวแปรสีเริ่มต้น (Light Mode) --- */
         :root {
             --bg-body: #dbe2e6;
             --bg-container: #f6f3e6;
@@ -26,31 +26,29 @@
             --input-bg: #ffffff;
             --input-text: #333333;
             
-            /* สีพิเศษคงเดิมเพื่อความสวยงาม */
             --bg-orange: #f7dec5;
             --bg-highlight-yellow: #fff4a3;
             --bg-empty-th: #e5e3d3;
+            --btn-toggle-color: #2c3e50;
         }
 
-        /* --- โหมดมืดอัตโนมัติ (Dark Mode เมื่อเปิดโหมดพระจันทร์ในระบบเครื่อง) --- */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-body: #12181f;
-                --bg-container: #1e252b;
-                --text-main: #ffffff;
-                --text-muted: #e0e0e0;
-                --table-border: #454f5b;
-                --table-cell-border: #38424d;
-                --table-bg: #242c35;
-                --input-border: #4f5b66;
-                --input-bg: #1a2129;
-                --input-text: #ffffff;
-                
-                /* ปรับสีไฮไลท์ในโหมดมืดให้อ่านง่ายสบายตาขึ้น */
-                --bg-orange: #5c3a21;
-                --bg-highlight-yellow: #524811;
-                --bg-empty-th: #2d3742;
-            }
+        /* --- สลับสีเมื่อเปิดใช้งานคลาส dark บน body --- */
+        body.dark {
+            --bg-body: #12181f;
+            --bg-container: #1e252b;
+            --text-main: #ffffff;
+            --text-muted: #e0e0e0;
+            --table-border: #454f5b;
+            --table-cell-border: #38424d;
+            --table-bg: #242c35;
+            --input-border: #4f5b66;
+            --input-bg: #1a2129;
+            --input-text: #ffffff;
+            
+            --bg-orange: #5c3a21;
+            --bg-highlight-yellow: #524811;
+            --bg-empty-th: #2d3742;
+            --btn-toggle-color: #f2d154;
         }
 
         body {
@@ -68,14 +66,33 @@
         }
 
         .container {
+            position: relative; /* สำหรับจัดตำแหน่งปุ่มพระจันทร์ */
             width: 100%;
             max-width: 620px;
             background-color: var(--bg-container);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: background-color 0.3s ease;
+        }
+
+        /* ปุ่มสลับโหมดดวงอาทิตย์ / พระจันทร์ บนเว็บเพจ */
+        .mode-toggle {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--btn-toggle-color);
+            transition: transform 0.2s, color 0.3s;
+            padding: 5px;
+        }
+
+        .mode-toggle:hover {
+            transform: scale(1.15);
         }
 
         .header-title {
@@ -89,10 +106,14 @@
 
         .warning-text {
             font-size: 13.5px;
-            color: #ff5252;
+            color: #c62828;
             text-align: center;
             font-weight: 500;
             margin-bottom: 25px;
+        }
+
+        body.dark .warning-text {
+            color: #ff5252;
         }
 
         table {
@@ -168,7 +189,7 @@
 
         input:focus {
             border-color: #4a90e2;
-            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
 
         .hidden-row {
@@ -195,7 +216,7 @@
             font-family: inherit;
             cursor: pointer;
             font-weight: 500;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
             transition: transform 0.1s, filter 0.2s;
         }
 
@@ -219,6 +240,10 @@
 <body>
 
 <div class="container" id="capture-area">
+    <button class="mode-toggle" id="modeBtn" onclick="toggleMode()">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
     <h1 class="header-title">คำนวณต้นทุนและกำไร</h1>
     <div class="warning-text">คำนวณง่ายๆแค่ปลายนิ้วเรา</div>
 
@@ -278,6 +303,21 @@
 </div>
 
 <script>
+// ฟังก์ชันสำหรับสลับโหมดมืด/สว่างเมื่อคลิกปุ่ม
+function toggleMode() {
+    const body = document.body;
+    const modeBtn = document.getElementById('modeBtn');
+    
+    body.classList.toggle('dark');
+    
+    // เปลี่ยนไอคอนตามโหมด
+    if (body.classList.contains('dark')) {
+        modeBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    } else {
+        modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+    }
+}
+
 function calculateTable1() {
     let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
     let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
@@ -322,11 +362,11 @@ function calculateTable2() {
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
-    // ปรับสีตัวเลข %GP ให้มองเห็นชัดเจนขึ้นทั้งโหมดมืดและสว่าง
+    const isDark = document.body.classList.contains('dark');
     if (marginPercent >= 0) {
-        marginElement.style.color = "#4caf50"; // สีเขียวสว่างขึ้นเล็กน้อยสำหรับโหมดมืด
+        marginElement.style.color = isDark ? "#4caf50" : "#2e7d32";
     } else {
-        marginElement.style.color = "#f44336"; // สีแดงสว่างขึ้นเล็กน้อยสำหรับโหมดมืด
+        marginElement.style.color = isDark ? "#f44336" : "#c62828";
     }
 }
 
@@ -341,17 +381,21 @@ function clearAll() {
 
 function captureScreen() {
     const targetElement = document.getElementById('capture-area');
-    
-    // ดึงค่าสีกรอบปัจจุบัน (ตรวจจับว่าเป็นโหมดมืดหรือสว่าง) เพื่อให้รูปที่เซฟออกมาสีไม่เพี้ยน
     const currentContainerBg = window.getComputedStyle(targetElement).backgroundColor;
+
+    // ซ่อนปุ่มพระจันทร์ชั่วคราวก่อนกดเซฟรูปภาพ เพื่อไม่ให้ติดไปในรูปภาพผลลัพธ์
+    const modeBtn = document.getElementById('modeBtn');
+    modeBtn.style.visibility = 'hidden';
 
     html2canvas(targetElement, {
         scale: 2, 
         backgroundColor: currentContainerBg, 
         useCORS: true
     }).then(canvas => {
+        // แอบแสดงปุ่มพระจันทร์กลับมาเหมือนเดิมหลังจากจับภาพเสร็จ
+        modeBtn.style.visibility = 'visible';
+
         const imageUri = canvas.toDataURL("image/png");
-        
         const downloadLink = document.createElement('a');
         downloadLink.href = imageUri;
         downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png';
