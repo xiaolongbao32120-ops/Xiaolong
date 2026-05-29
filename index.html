@@ -126,6 +126,28 @@
             color: #ff5252;
         }
 
+        /* โซนกล่องใส่ชื่อสินค้า */
+        .product-name-container {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .product-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .input-full {
+            width: 100% !important;
+            text-align: left !important;
+            box-sizing: border-box;
+            padding: 10px 12px;
+        }
+
         table {
             width: 100%;
             border-collapse: separate;
@@ -143,7 +165,7 @@
             padding: 12px 10px;
             text-align: center;
             color: var(--text-muted);
-            font-size: 16px;
+            font-size: 15px;
         }
 
         th:last-child, td:last-child {
@@ -156,7 +178,7 @@
 
         th {
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .bg-yellow {
@@ -167,6 +189,11 @@
         .bg-blue {
             background: linear-gradient(to bottom, #b9daf4, #9ec4e3);
             color: #1a365d;
+        }
+
+        .bg-green-header {
+            background: linear-gradient(to bottom, #a3e2a7, #7ecb83);
+            color: #1b5e20;
         }
 
         .bg-empty-th {
@@ -214,21 +241,24 @@
 
         .button-group {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             width: 100%;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
 
         .btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             flex: 1;
-            padding: 14px;
+            min-width: 130px;
+            padding: 12px;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 15px;
             font-family: inherit;
             cursor: pointer;
             font-weight: 500;
@@ -244,12 +274,45 @@
             transform: scale(0.99);
         }
 
-        .btn-clear {
-            background: linear-gradient(to bottom, #c62828, #b71c1c);
-        }
+        .btn-clear { background: linear-gradient(to bottom, #c62828, #b71c1c); }
+        .btn-save-data { background: linear-gradient(to bottom, #1565c0, #0d47a1); }
+        .btn-capture { background: linear-gradient(to bottom, #2e7d32, #1b5e20); }
 
-        .btn-capture {
-            background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+        .btn-delete {
+            background: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .btn-delete:hover { background: #e04444; }
+
+        /* ส่วนของตารางสรุปด้านล่าง */
+        .history-section {
+            margin-top: 10px;
+        }
+        .history-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .history-table th {
+            font-size: 13px;
+            padding: 10px 5px;
+        }
+        .history-table td {
+            font-size: 13px;
+            padding: 10px 5px;
         }
     </style>
 </head>
@@ -262,6 +325,11 @@
 
     <h1 class="header-title">คำนวณต้นทุนและกำไร</h1>
     <div class="warning-text">คำนวณง่ายๆแค่ปลายนิ้วเรา</div>
+
+    <div class="product-name-container">
+        <label class="product-label" for="product_name"><i class="fa-solid fa-box"></i> ชื่อสินค้า</label>
+        <input type="text" id="product_name" class="input-full" placeholder="พิมพ์ชื่อสินค้าตรงนี้...">
+    </div>
 
     <table>
         <thead>
@@ -314,7 +382,32 @@
 
     <div class="button-group">
         <button class="btn btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="btn btn-save-data" onclick="addRecord()">บันทึกข้อมูล <i class="fa-solid fa-floppy-disk"></i></button>
         <button class="btn btn-capture" onclick="captureScreen()">บันทึกเป็นรูปภาพ <i class="fa-solid fa-camera"></i></button>
+    </div>
+
+    <div class="history-section">
+        <div class="history-title"><i class="fa-solid fa-list-check"></i> รายการสรุปที่บันทึกไว้</div>
+        <div class="table-responsive">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th class="bg-green-header" style="width: 25%;">ชื่อสินค้า</th>
+                        <th class="bg-green-header" style="width: 15%;">ราคาประกาศ</th>
+                        <th class="bg-green-header" style="width: 12%;">%GP</th>
+                        <th class="bg-green-header" style="width: 15%;">ต้นทุน</th>
+                        <th class="bg-green-header" style="width: 15%;">ราคาขายจริง</th>
+                        <th class="bg-green-header" style="width: 13%;">%กำไร</th>
+                        <th class="bg-green-header" style="width: 5%;" data-html2canvas-ignore="true">ลบ</th>
+                    </tr>
+                </thead>
+                <tbody id="history_tbody">
+                    <tr id="empty_row">
+                        <td colspan="7" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -331,6 +424,7 @@ function toggleMode() {
         modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
     calculateTable2(); 
+    refreshHistoryColors(); // อัปเดตสีตารางล่างตามโหมดมืด/สว่างด้วย
 }
 
 function calculateTable1() {
@@ -386,13 +480,86 @@ function calculateTable2() {
     }
 }
 
+// ฟังก์ชันเพิ่มข้อมูลลงตารางด้านล่าง
+function addRecord() {
+    let pName = document.getElementById('product_name').value.trim() || "สินค้าไม่ได้ระบุชื่อ";
+    let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
+    let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
+    let cost = parseFloat(document.getElementById('cost_result').innerText) || 0;
+    let salePrice2 = parseFloat(document.getElementById('sale_price_2').value) || 0;
+    let marginPercent = parseFloat(document.getElementById('margin_percent_result').innerText) || 0;
+
+    // เช็คแถวว่างแรกสุด
+    let emptyRow = document.getElementById('empty_row');
+    if (emptyRow) {
+        emptyRow.remove();
+    }
+
+    let tbody = document.getElementById('history_tbody');
+    let tr = document.createElement('tr');
+
+    // กำหนดสีตัวเลขสำหรับคอลัมน์ %กำไร ในตารางสรุป
+    let colorClass = 'text-profit';
+    if (marginPercent < 0) {
+        colorClass = 'text-loss';
+    } else if (marginPercent >= 0 && marginPercent <= 0.99) {
+        colorClass = 'text-warning';
+    }
+
+    tr.innerHTML = `
+        <td style="text-align: left; font-weight: 500;">${pName}</td>
+        <td>${salePrice1.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td>${gpPercent.toFixed(2)}%</td>
+        <td style="font-weight: 500;">${cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td>${salePrice2.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td class="${colorClass}" style="font-weight: bold;" data-margin="${marginPercent}">${marginPercent.toFixed(2)}%</td>
+        <td data-html2canvas-ignore="true"><button class="btn-delete" onclick="deleteRow(this)"><i class="fa-solid fa-trash-can"></i></button></td>
+    `;
+
+    tbody.appendChild(tr);
+
+    // เคลียร์ค่าชื่อสินค้าออกเพื่อให้คีย์ชิ้นต่อไปได้เลย
+    document.getElementById('product_name').value = '';
+}
+
+// ฟังก์ชันลบแถวที่เลือก
+function deleteRow(button) {
+    button.closest('tr').remove();
+    let tbody = document.getElementById('history_tbody');
+    if (tbody.children.length === 0) {
+        tbody.innerHTML = `
+            <tr id="empty_row">
+                <td colspan="7" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
+            </tr>
+        `;
+    }
+}
+
+// อัปเดตสีตัวเลขของตารางสรุปตอนกดเปลี่ยนธีมมืด/สว่าง
+function refreshHistoryColors() {
+    let rows = document.querySelectorAll('#history_tbody tr:not(#empty_row)');
+    rows.forEach(row => {
+        let marginTd = row.children[5];
+        let val = parseFloat(marginTd.getAttribute('data-margin')) || 0;
+        marginTd.classList.remove('text-profit', 'text-warning', 'text-loss');
+        if (val < 0) {
+            marginTd.classList.add('text-loss');
+        } else if (val >= 0 && val <= 0.99) {
+            marginTd.classList.add('text-warning');
+        } else {
+            marginTd.classList.add('text-profit');
+        }
+    });
+}
+
 function clearAll() {
+    document.getElementById('product_name').value = '';
     document.getElementById('sale_price_1').value = '';
     document.getElementById('gp_percent').value = '';
     document.getElementById('sale_price_2').value = '';
     
     calculateTable1();
-    document.getElementById('sale_price_1').focus();
+    document.getElementById('product_name').focus();
 }
 
 function captureScreen() {
@@ -402,6 +569,7 @@ function captureScreen() {
     const modeBtn = document.getElementById('modeBtn');
     modeBtn.style.visibility = 'hidden';
 
+    // เพิ่ม attribute พิเศษระบุหัวข้อลบ เพื่อสั่งไม่ให้ html2canvas วาดปุ่มลบลงไปในรูปภาพตอนกดเซฟ
     html2canvas(targetElement, {
         scale: 2, 
         backgroundColor: currentContainerBg, 
@@ -410,7 +578,6 @@ function captureScreen() {
     }).then(canvas => {
         modeBtn.style.visibility = 'visible';
 
-        // ปรับปรุงระบบเซฟรูปให้รองรับ Mobile Webview และ iOS Safari ได้เสถียรยิ่งขึ้น
         try {
             canvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
@@ -427,7 +594,6 @@ function captureScreen() {
                 }, 100);
             }, 'image/png');
         } catch (e) {
-            // fallback หาก blob ใช้ไม่ได้ ให้กลับไปใช้ dataURI แบบเดิม
             const imageUri = canvas.toDataURL("image/png");
             const downloadLink = document.createElement('a');
             downloadLink.href = imageUri;
