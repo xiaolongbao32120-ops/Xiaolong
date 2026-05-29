@@ -179,7 +179,6 @@
             background-color: var(--bg-result-white) !important;
         }
 
-        /* คลาสสีตัวเลขเวอร์ชันเสถียร (ผูกกับ CSS Variables ไม่เขียนทับแบบดิบๆ) */
         .text-profit {
             color: var(--color-profit) !important;
         }
@@ -331,7 +330,7 @@ function toggleMode() {
     } else {
         modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
-    calculateTable2(); // บังคับรีเฟรชสีตัวเลขให้สว่าง/มืดตามทันทีเมื่อกดเปลี่ยนโหมด
+    calculateTable2(); 
 }
 
 function calculateTable1() {
@@ -358,7 +357,6 @@ function calculateTable2() {
     let profitDiff = salePrice2 - cost;
     let marginPercent = 0;
 
-    // เช็กและป้องกัน Error หารด้วยศูนย์ (กรณีพิมพ์เลข 0 หรือปล่อยว่างไว้)
     if (salePrice2 > 0) {
         marginPercent = (profitDiff / salePrice2) * 100;
     } else {
@@ -377,16 +375,14 @@ function calculateTable2() {
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
-    // เคลียร์คลาสสีเดิมออกทั้งหมดเพื่อป้องกันสีกระตุกหรือซ้อนทับกัน
     marginElement.classList.remove('text-profit', 'text-warning', 'text-loss');
 
-    // ตรวจสอบเงื่อนไขการเปลี่ยนสีตามที่คุณครูต้องการ
     if (marginPercent < 0) {
-        marginElement.classList.add('text-loss');    // น้อยกว่า 0 เป็นสีแดง
+        marginElement.classList.add('text-loss');    
     } else if (marginPercent >= 0 && marginPercent <= 0.99) {
-        marginElement.classList.add('text-warning'); // อยู่ระหว่าง 0 ถึง 0.99 เป็นสีส้ม
+        marginElement.classList.add('text-warning'); 
     } else {
-        marginElement.classList.add('text-profit');  // ตั้งแต่ 1.00 ขึ้นไปเป็นสีเขียว
+        marginElement.classList.add('text-profit');  
     }
 }
 
@@ -409,18 +405,37 @@ function captureScreen() {
     html2canvas(targetElement, {
         scale: 2, 
         backgroundColor: currentContainerBg, 
-        useCORS: true
+        useCORS: true,
+        logging: false
     }).then(canvas => {
         modeBtn.style.visibility = 'visible';
 
-        const imageUri = canvas.toDataURL("image/png");
-        const downloadLink = document.createElement('a');
-        downloadLink.href = imageUri;
-        downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png';
-        
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        // ปรับปรุงระบบเซฟรูปให้รองรับ Mobile Webview และ iOS Safari ได้เสถียรยิ่งขึ้น
+        try {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const downloadLink = document.createElement('a');
+                downloadLink.href = url;
+                downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png';
+                
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(downloadLink);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }, 'image/png');
+        } catch (e) {
+            // fallback หาก blob ใช้ไม่ได้ ให้กลับไปใช้ dataURI แบบเดิม
+            const imageUri = canvas.toDataURL("image/png");
+            const downloadLink = document.createElement('a');
+            downloadLink.href = imageUri;
+            downloadLink.download = 'ผลการคำนวณต้นทุนและกำไร.png';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
     });
 }
 </script>
