@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>คำนวณต้นทุนและกำไร</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#dbe2e6">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;700&family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -26,12 +28,10 @@
             --input-border: #b0c4de;
             --input-bg: #ffffff;
             --input-text: #333333;
-            
-            /* สีช่องผลลัพธ์ปรับเป็นสีขาวปกติ */
             --bg-result-white: #fcfbfa; 
-            
             --bg-empty-th: #e5e3d3;
             --btn-toggle-color: #2c3e50;
+            --history-btn-del: #c62828;
         }
 
         /* --- สลับสีเมื่อเปิดใช้งานคลาส dark บน body --- */
@@ -46,12 +46,10 @@
             --input-border: #4f5b66;
             --input-bg: #1a2129;
             --input-text: #ffffff;
-            
-            /* ในโหมดมืด ช่องผลลัพธ์จะเปลี่ยนเป็นสีมืดตามตารางเพื่อความสบายตา */
             --bg-result-white: #242c35; 
-            
             --bg-empty-th: #2d3742;
             --btn-toggle-color: #f2d154;
+            --history-btn-del: #ff5252;
         }
 
         body {
@@ -78,6 +76,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: background-color 0.3s ease;
+            margin-bottom: 25px;
         }
 
         .mode-toggle {
@@ -167,7 +166,6 @@
             font-weight: bold;
         }
 
-        /* คลาสสไตล์ช่องผลลัพธ์เป็นสีขาวปกติ */
         .bg-result-normal {
             background-color: var(--bg-result-white) !important;
         }
@@ -189,6 +187,20 @@
         input:focus {
             border-color: #4a90e2;
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        /* โซนพิมพ์ชื่อสินค้าสำหรับบันทึก */
+        .save-zone {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .save-zone input {
+            text-align: left;
+            flex: 2;
+            width: auto;
         }
 
         .hidden-row {
@@ -233,6 +245,70 @@
 
         .btn-capture {
             background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+        }
+
+        .btn-save {
+            background: linear-gradient(to bottom, #0288d1, #01579b);
+            flex: 1;
+            padding: 8px;
+        }
+
+        /* --- ส่วนสไตล์ตารางประวัติย้อนหลัง --- */
+        .history-container {
+            width: 100%;
+            max-width: 620px;
+            background-color: var(--bg-container);
+            padding: 20px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .btn-clear-history {
+            background: none;
+            border: none;
+            color: var(--history-btn-del);
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 500;
+        }
+
+        .btn-clear-history:hover {
+            text-decoration: underline;
+        }
+
+        .history-table {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .history-table th, .history-table td {
+            padding: 8px 6px;
+            font-size: 14px;
+        }
+
+        .btn-del-item {
+            background: none;
+            border: none;
+            color: var(--history-btn-del);
+            cursor: pointer;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -295,13 +371,46 @@
         </tbody>
     </table>
 
+    <div class="save-zone">
+        <input type="text" id="product_name" placeholder="พิมพ์ชื่อสินค้าตรงนี้เพื่อบันทึกประวัติ...">
+        <button class="btn btn-save" onclick="saveToHistory()">บันทึกประวัติ <i class="fa-solid fa-floppy-disk"></i></button>
+    </div>
+
     <div class="button-group">
         <button class="btn btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn btn-capture" onclick="captureScreen()">บันทึกเป็นรูปภาพ <i class="fa-solid fa-camera"></i></button>
     </div>
 </div>
 
+<div class="history-container">
+    <div class="history-header">
+        <h2 class="history-title"><i class="fa-solid fa-history"></i> ประวัติการคำนวณ</h2>
+        <button class="btn-clear-history" onclick="clearAllHistory()">ล้างทั้งหมด</button>
+    </div>
+    <div style="overflow-x: auto;">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th class="bg-yellow" style="width: 25%;">ชื่อสินค้า</th>
+                    <th class="bg-yellow" style="width: 18%;">ประกาศขาย</th>
+                    <th class="bg-yellow" style="width: 15%;">ต้นทุน</th>
+                    <th class="bg-blue" style="width: 18%;">ต้องการขาย</th>
+                    <th class="bg-blue" style="width: 16%;">%GP ใหม่</th>
+                    <th class="bg-empty-th" style="width: 8%;"><i class="fa-solid fa-trash"></i></th>
+                </tr>
+            </thead>
+            <tbody id="history_rows">
+                </tbody>
+        </table>
+    </div>
+</div>
+
 <script>
+// เรียกใช้ฟังก์ชันแสดงประวัติทันทีเมื่อโหลดหน้าเว็บ
+document.addEventListener("DOMContentLoaded", function() {
+    loadHistory();
+});
+
 function toggleMode() {
     const body = document.body;
     const modeBtn = document.getElementById('modeBtn');
@@ -313,7 +422,7 @@ function toggleMode() {
     } else {
         modeBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     }
-    calculateTable2(); // รีเฟรชสีตัวอักษรหลังจากสลับโหมด
+    calculateTable2(); 
 }
 
 function calculateTable1() {
@@ -360,7 +469,6 @@ function calculateTable2() {
     let marginElement = document.getElementById('margin_percent_result');
     marginElement.innerText = marginPercent.toFixed(2) + "%";
 
-    // ปรับเฉพาะสีตัวเลขให้เด่นชัดตามโหมดมืด/สว่าง
     const isDark = document.body.classList.contains('dark');
     if (marginPercent >= 0) {
         marginElement.style.color = isDark ? "#4caf50" : "#2e7d32";
@@ -373,6 +481,7 @@ function clearAll() {
     document.getElementById('sale_price_1').value = '';
     document.getElementById('gp_percent').value = '';
     document.getElementById('sale_price_2').value = '';
+    document.getElementById('product_name').value = '';
     
     calculateTable1();
     document.getElementById('sale_price_1').focus();
@@ -401,6 +510,88 @@ function captureScreen() {
         downloadLink.click();
         document.body.removeChild(downloadLink);
     });
+}
+
+/* ========================================================
+   ระบบบันทึกประวัติการคำนวณ (LocalStorage)
+   ======================================================== */
+
+// ฟังก์ชันบันทึกข้อมูล
+function saveToHistory() {
+    let pName = document.getElementById('product_name').value.trim();
+    if (pName === "") {
+        alert("กรุณาพิมพ์ชื่อสินค้าก่อนกดบันทึกครับ");
+        return;
+    }
+
+    let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
+    let cost = parseFloat(document.getElementById('cost_result').innerText) || 0;
+    let salePrice2 = parseFloat(document.getElementById('sale_price_2').value) || 0;
+    let marginPercent = document.getElementById('margin_percent_result').innerText;
+
+    // สร้างก้อนข้อมูล Object
+    let record = {
+        id: Date.now(), // ใช้เวลาปัจจุบันทำเป็น ID ประจำรายการ
+        name: pName,
+        price1: salePrice1.toFixed(2),
+        cost: cost.toFixed(2),
+        price2: salePrice2.toFixed(2),
+        gp2: marginPercent
+    };
+
+    // ดึงข้อมูลเก่าในคลังออกมา (ถ้าไม่มีให้เป็นอาร์เรย์เปล่า)
+    let history = JSON.parse(localStorage.getItem('calc_history')) || [];
+    
+    // ใส่ข้อมูลใหม่เข้าไปข้างหน้าสุด
+    history.unshift(record);
+
+    // เซฟกลับลงไปในคลังเบราว์เซอร์
+    localStorage.setItem('calc_history', JSON.stringify(history));
+
+    // ล้างช่องกรอกชื่อ แล้วโหลดตารางประวัติใหม่
+    document.getElementById('product_name').value = '';
+    loadHistory();
+}
+
+// ฟังก์ชันดึงประวัติมาโชว์บนหน้าเว็บ
+function loadHistory() {
+    let history = JSON.parse(localStorage.getItem('calc_history')) || [];
+    let tbody = document.getElementById('history_rows');
+    tbody.innerHTML = '';
+
+    if (history.length === 0) {
+        tbody.innerHTML = <tr><td colspan="6" style="text-align:center; color:#999; font-style:italic;">ยังไม่มีประวัติการคำนวณถูกบันทึก</td></tr>;
+        return;
+    }
+
+    history.forEach(item => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="text-align: left; font-weight: 500;">${item.name}</td>
+            <td>${item.price1}</td>
+            <td style="font-weight: bold;">${item.cost}</td>
+            <td>${item.price2}</td>
+            <td style="font-weight: bold; color: ${item.gp2.includes('-') ? '#c62828' : '#2e7d32'}">${item.gp2}</td>
+            <td><button class="btn-del-item" onclick="deleteHistoryItem(${item.id})"><i class="fa-solid fa-circle-xmark"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ฟังก์ชันลบเฉพาะบางรายการ
+function deleteHistoryItem(id) {
+    let history = JSON.parse(localStorage.getItem('calc_history')) || [];
+    history = history.filter(item => item.id !== id);
+    localStorage.setItem('calc_history', JSON.stringify(history));
+    loadHistory();
+}
+
+// ฟังก์ชันล้างประวัติทั้งหมด
+function clearAllHistory() {
+    if (confirm("คุณแน่ใจใช่ไหมว่าจะลบประวัติการคำนวณทั้งหมด?")) {
+        localStorage.removeItem('calc_history');
+        loadHistory();
+    }
 }
 </script>
 
