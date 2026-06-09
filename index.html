@@ -79,6 +79,7 @@
             min-height: 100vh;
             box-sizing: border-box;
             transition: background-color 0.3s ease;
+            overflow-x: hidden; /* ป้องกันสติกเกอร์ลอยทะลุขอบจอขวา */
         }
 
         .container {
@@ -408,6 +409,36 @@
             font-size: 13px;
             padding: 12px 6px;
         }
+
+        /* --- CSS สำหรับลูกเล่นสติกเกอร์เด้งและลอยมาข้างหน้า --- */
+        .sticker-pop {
+            position: fixed;
+            pointer-events: none; /* เพื่อไม่ให้ขวางการกดคลิกบนหน้าจอ */
+            z-index: 9999;
+            width: 60px; /* ขนาดของสติกเกอร์ */
+            height: 60px;
+            object-fit: contain;
+            animation: stickerAnimation 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes stickerAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2) rotate(var(--rand-rot));
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(1) rotate(var(--rand-rot));
+            }
+            100% {
+                /* ลอยห่างออกไปตามแรงส่ง และขยายใหญ่พุ่งเข้าหาหน้าจอเล็กน้อยก่อนจางหาย */
+                transform: translate(calc(-50% + var(--move-x)), calc(-50% + var(--move-y))) scale(1.4) rotate(calc(var(--rand-rot) * 1.5));
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -463,7 +494,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><input type="number" id="sale_price_2" oninput="calculateTable2()" placeholder="0" min="0" step="any"></td>
+                <td><input type="number" id="sale_price_2" oninput="calculateTable2(); triggerStickerBurst(event);" placeholder="0" min="0" step="any"></td>
                 <td id="cost_link" class="bg-result-normal">0.00</td>
                 <td class="bg-result-normal" style="padding: 5px 0;">
                     <div class="chart-container">
@@ -527,6 +558,15 @@
 <script>
 // ตัวแปรเก็บอาร์เรย์ของข้อมูลตารางเพื่อใช้กับ Local Storage
 let savedRecords = [];
+
+// คลังรูปภาพสติกเกอร์/อีโมจิ (คุณสามารถเปลี่ยนลิงก์รูปภาพของตัวเองตรงนี้ได้เลยครับ)
+const stickerImages = [
+    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f911/512.webp", // หน้าตาโตเป็นเงิน
+    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.webp", // จรวดพุ่ง
+    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f4b8/512.webp", // เงินมีปีกบิน
+    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f4b5/512.webp", // แบงก์ดอลลาร์
+    "https://fonts.gstatic.com/s/e/notoemoji/latest/1f4b3/512.webp"  // บัตรเครดิต
+];
 
 // เรียกทำงานเมื่อเปิดหน้าเว็บขึ้นมา เพื่อดึงข้อมูลที่เคยเซฟไว้
 window.onload = function() {
@@ -622,6 +662,53 @@ function updateDonutChart(percent) {
     ring.style.strokeDashoffset = offset;
 }
 
+// --- ฟังก์ชันสร้างสติกเกอร์พุ่งกระจายปุ๊บๆ ๆ ---
+function triggerStickerBurst(event) {
+    // กำหนดพิกัดเริ่มต้นให้จุดที่สติกเกอร์จะระเบิดออกมา (ตรงช่องอินพุตที่กำลังพิมพ์อยู่)
+    let startX = event.clientX;
+    let startY = event.clientY;
+
+    // ถ้าระบบหาพิกัดเมาส์/ทัชสกรีนไม่เจอ ให้ใช้ตรงกลางจอแทน
+    if (!startX || !startY) {
+        startX = window.innerWidth / 2;
+        startY = window.innerHeight / 2;
+    }
+
+    // สุ่มจำนวนสติกเกอร์ที่จะเด้งออกมาต่อการกดปุ่มเปลี่ยนเลข (รอบละ 5-8 อัน)
+    const stickerCount = Math.floor(Math.random() * 4) + 5; 
+
+    for (let i = 0; i < stickerCount; i++) {
+        const img = document.createElement('img');
+        
+        // สุ่มเลือกรูปจากคลังรูปภาพด้านบน
+        const randomSrc = stickerImages[Math.floor(Math.random() * stickerImages.length)];
+        img.src = randomSrc;
+        img.classList.add('sticker-pop');
+
+        // ตั้งตำแหน่งเกิดของสติกเกอร์
+        img.style.left = ${startX}px;
+        img.style.top = ${startY}px;
+
+        // สุ่มมุมหมุนสติกเกอร์ขณะเด้ง (-30 ถึง 30 องศา)
+        const randRot = (Math.random() * 60 - 30) + 'deg';
+        // สุ่มระยะการลอยกระจายออกไปทางแนวแกน X และ Y (-120 ถึง 120 พิกเซล)
+        const moveX = (Math.random() * 240 - 120) + 'px';
+        const moveY = (Math.random() * 240 - 120) + 'px';
+
+        // ส่งตัวแปรสุ่มเข้าไปใน CSS Variable
+        img.style.setProperty('--rand-rot', randRot);
+        img.style.setProperty('--move-x', moveX);
+        img.style.setProperty('--move-y', moveY);
+
+        document.body.appendChild(img);
+
+        // พอนิเมชันจบ 800ms ก็สั่งให้ทำลายตัวเองทิ้งเพื่อป้องกันเว็บบั๊กและหน่วงเครื่อง
+        setTimeout(() => {
+            img.remove();
+        }, 800);
+    }
+}
+
 // แก้ไขฟังก์ชันบันทึกข้อมูลให้เชื่อมต่อระบบ Local Storage
 function addRecord() {
     let pName = document.getElementById('product_name').value.trim() || "สินค้าไม่ได้ระบุชื่อ";
@@ -677,7 +764,7 @@ function renderTable() {
         }
 
         tr.innerHTML = `
-            <td style="text-align: canter; font-weight: 500;">${record.name}</td>
+            <td style="text-align: center; font-weight: 500;">${record.name}</td>
             <td>${record.price1.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.gp.toFixed(2)}%</td>
             <td style="font-weight: 500;">${record.cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
