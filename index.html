@@ -316,8 +316,8 @@
             <tr>
                 <th class="bg-yellow" style="width: 25%;">ราคาประกาศ</th>
                 <th class="bg-yellow" style="width: 20%;">%GP</th>
-                <th class="bg-empty-th" style="width: 28%;">ต้นทุน+Vat</th>
-                <th class="bg-empty-th" style="width: 27%;">ทุนA1</th>
+                <th class="bg-yellow" style="width: 28%;">ต้นทุน+Vat</th>
+                <th class="bg-yellow" style="width: 27%;">ทุนA1</th>
             </tr>
         </thead>
         <tbody>
@@ -325,7 +325,7 @@
                 <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
                 <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
                 <td id="cost_result" class="bg-result-normal" style="font-weight: bold;">0.00</td>
-                <td id="cost_a1_result" class="bg-result-normal" style="font-weight: bold; color: var(--color-warning);">0.00</td>
+                <td id="cost_a1_result" class="bg-result-normal" style="font-weight: bold;">0.00</td>
             </tr>
             <tr class="hidden-row">
                 <td id="sale_price_1_copy">0.00</td>
@@ -341,7 +341,7 @@
             <tr>
                 <th class="bg-blue" style="width: 35%;">ราคาขายจริง</th>
                 <th class="bg-blue" style="width: 35%;">ต้นทุน+Vat</th>
-                <th class="bg-empty-th" style="width: 30%;">%กำไร</th>
+                <th class="bg-blue" style="width: 30%;">%กำไร</th>
             </tr>
         </thead>
         <tbody>
@@ -564,7 +564,7 @@ function renderTable() {
             <td>${record.price1.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.gp.toFixed(2)}%</td>
             <td style="font-weight: 500;">${record.cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
-            <td style="color: var(--color-warning);">${a1_cost_display.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="font-weight: 500;">${a1_cost_display.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.price2.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td class="${colorClass}" style="font-weight: bold;" data-margin="${record.margin}">${record.margin.toFixed(2)}%</td>
             <td data-html2canvas-ignore="true"><button class="btn-delete" onclick="deleteRecord(${record.id})"><i class="fa-solid fa-trash-can"></i></button></td>
