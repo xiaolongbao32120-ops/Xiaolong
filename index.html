@@ -2,7 +2,8 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ปรับ Viewport ป้องกันการซูมอัตโนมัติเมื่อจิ้มช่องพิมพ์บนมือถือ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>หลงเปา</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#dbe2e6">
@@ -35,14 +36,13 @@
             --switch-bg: #b0c4de;
             --switch-btn: #ffffff;
 
-            /* ตัวแปรสีสถานะตามเงื่อนไข */
-            --color-profit: #2e7d32;   /* เขียว */
-            --color-warning: #e65100;  /* ส้ม (0 - 0.99) */
-            --color-loss: #c62828;     /* แดง (ติดลบ) */
+            --color-profit: #2e7d32;   
+            --color-warning: #e65100;  
+            --color-loss: #c62828;     
             --chart-bg: #e5e3d3;
         }
 
-        /* --- สลับสีเมื่อเปิดใช้งานคลาส dark บน body --- */
+        /* --- โหมดมืด (Dark Mode) --- */
         body.dark {
             --bg-body: #12181f;
             --bg-container: #1e252b;
@@ -60,10 +60,9 @@
             --switch-bg: #4f5b66;
             --switch-btn: #f2d154;
 
-            /* สีสถานะในโหมดมืด */
-            --color-profit: #4caf50;   /* เขียวสว่าง */
-            --color-warning: #ff9800;  /* ส้มสว่าง (0 - 0.99) */
-            --color-loss: #f44336;     /* แดงสว่าง */
+            --color-profit: #4caf50;   
+            --color-warning: #ff9800;  
+            --color-loss: #f44336;     
             --chart-bg: #2d3742;
         }
 
@@ -87,26 +86,20 @@
             max-width: 620px;
             background-color: var(--bg-container);
             padding: 35px 30px;
-            border-radius: 30px; /* เพิ่มความโค้งมนระดับมินิมอล */
+            border-radius: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: background-color 0.3s ease;
+            box-sizing: border-box;
         }
 
-        /* --- สวิตช์สลับโหมดซ้าย-ขวาแบบ Minimal --- */
+        /* --- สวิตช์โหมดมืด --- */
         .mode-toggle-container {
             position: absolute;
             top: 25px;
             right: 25px;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        .switch-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            cursor: pointer;
         }
 
         .theme-switch {
@@ -116,102 +109,62 @@
             height: 30px;
         }
 
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
 
         .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
             background-color: var(--switch-bg);
-            transition: .4s;
-            border-radius: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 6px;
-            box-sizing: border-box;
+            transition: .4s; border-radius: 34px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 6px; box-sizing: border-box;
         }
 
-        .slider i {
-            font-size: 12px;
-            z-index: 1;
-        }
+        .slider i { font-size: 12px; z-index: 1; }
         .slider .fa-sun { color: #ffb74d; }
         .slider .fa-moon { color: #cfd8dc; }
 
         .slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
+            position: absolute; content: "";
+            height: 22px; width: 22px; left: 4px; bottom: 4px;
             background-color: var(--switch-btn);
-            transition: .4s;
-            border-radius: 50%;
-            z-index: 2;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: .4s; border-radius: 50%; z-index: 2;
         }
 
-        input:checked + .slider:before {
-            transform: translateX(30px);
-        }
+        input:checked + .slider:before { transform: translateX(30px); }
 
         .header-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-main);
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            font-size: 28px; font-weight: 700;
+            color: var(--text-main); text-align: center;
+            margin-top: 10px; margin-bottom: 5px;
         }
 
         .warning-text {
-            font-size: 13.5px;
-            color: #c62828;
-            text-align: center;
-            font-weight: 500;
-            margin-bottom: 25px;
+            font-size: 13.5px; color: #c62828;
+            text-align: center; font-weight: 500; margin-bottom: 25px;
         }
-
-        body.dark .warning-text {
-            color: #ff5252;
-        }
+        body.dark .warning-text { color: #ff5252; }
 
         .product-name-container {
-            width: 100%;
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            width: 100%; margin-bottom: 20px;
+            display: flex; flex-direction: column; gap: 6px;
         }
 
         .product-label {
-            font-size: 15px;
-            font-weight: 600;
-            color: var(--text-main);
+            font-size: 15px; font-weight: 600; color: var(--text-main);
         }
 
-        /* Input โค้งมน มินิมอล */
         input {
-            width: 85%;
+            width: 100%;
+            box-sizing: border-box;
             padding: 10px 15px;
             border: 1px solid var(--input-border);
             border-radius: 20px; 
-            text-align: right;
-            font-size: 16px;
-            font-family: inherit;
-            color: var(--input-text);
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s, background-color 0.3s;
+            text-align: center; /* เปลี่ยนเป็นกึ่งกลางเพื่อให้สมดุลบนมือถือ */
+            font-size: 16px; font-family: inherit;
+            color: var(--input-text); outline: none;
             background-color: var(--input-bg);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
 
         input:focus {
@@ -219,151 +172,69 @@
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
 
-        .input-full {
-            width: 100% !important;
-            text-align: left !important;
-            box-sizing: border-box;
-        }
+        .input-full { text-align: left !important; }
 
         table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-bottom: 25px;
-            border-radius: 20px; 
-            overflow: hidden;
-            border: 1px solid var(--table-border);
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            margin-bottom: 25px; border-radius: 15px; 
+            overflow: hidden; border: 1px solid var(--table-border);
             background-color: var(--table-bg);
+            table-layout: fixed; /* ล็อคขนาดไม่ให้ขยายตามข้อความ */
         }
 
         th, td {
             border-right: 1px solid var(--table-cell-border);
             border-bottom: 1px solid var(--table-cell-border);
-            padding: 12px 10px;
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 15px;
-            vertical-align: middle;
+            padding: 12px 6px; text-align: center;
+            color: var(--text-muted); font-size: 14px;
+            vertical-align: middle; word-wrap: break-word;
         }
+        th:last-child, td:last-child { border-right: none; }
+        tr:last-child td { border-bottom: none; }
+        
+        th { font-weight: 600; font-size: 13px; }
 
-        th:last-child, td:last-child {
-            border-right: none;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        th {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .bg-yellow {
-            background: linear-gradient(to bottom, #f2d154, #dfba37);
-            color: #222;
-        }
-
-        .bg-blue {
-            background: linear-gradient(to bottom, #b9daf4, #9ec4e3);
-            color: #1a365d;
-        }
-
-        .bg-green-header {
-            background: linear-gradient(to bottom, #a3e2a7, #7ecb83);
-            color: #1b5e20;
-        }
-
-        .bg-empty-th {
-            background-color: var(--bg-empty-th);
-            color: var(--text-main) !important; 
-            font-weight: bold;
-        }
-
-        .bg-result-normal {
-            background-color: var(--bg-result-white) !important;
-        }
+        .bg-yellow { background: linear-gradient(to bottom, #f2d154, #dfba37); color: #222; }
+        .bg-blue { background: linear-gradient(to bottom, #b9daf4, #9ec4e3); color: #1a365d; }
+        .bg-green-header { background: linear-gradient(to bottom, #a3e2a7, #7ecb83); color: #1b5e20; }
+        .bg-empty-th { background-color: var(--bg-empty-th); color: var(--text-main) !important; font-weight: bold; }
+        .bg-result-normal { background-color: var(--bg-result-white) !important; }
 
         .text-profit { color: var(--color-profit) !important; }
         .text-warning { color: var(--color-warning) !important; }
         .text-loss { color: var(--color-loss) !important; }
 
-        .hidden-row {
-            display: none !important;
-        }
+        .hidden-row { display: none !important; }
 
-        /* --- วงแหวน Donut Chart --- */
         .chart-container {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            width: 75px;
-            height: 75px;
-            margin: auto;
+            display: inline-flex; justify-content: center; align-items: center;
+            position: relative; width: 65px; height: 65px; margin: auto;
         }
-        .donut-bg {
-            fill: none;
-            stroke: var(--chart-bg);
-            stroke-width: 9;
-        }
+        .donut-bg { fill: none; stroke: var(--chart-bg); stroke-width: 9; }
         .donut-ring {
-            fill: none;
-            stroke: var(--color-profit);
-            stroke-width: 9;
-            stroke-linecap: round;
-            stroke-dasharray: 157; 
-            stroke-dashoffset: 157;
+            fill: none; stroke: var(--color-profit); stroke-width: 9;
+            stroke-linecap: round; stroke-dasharray: 157; stroke-dashoffset: 157;
             transition: stroke-dashoffset 0.4s ease, stroke 0.3s;
-            transform: rotate(-90deg);
-            transform-origin: 35px 35px;
+            transform: rotate(-90deg); transform-origin: 35px 35px;
         }
         .chart-text {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            width: 100%;
+            position: absolute; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; width: 100%;
         }
-        .chart-number {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--color-profit);
-            transition: color 0.3s;
-        }
+        .chart-number { font-size: 12px; font-weight: 700; color: var(--color-profit); transition: color 0.3s; }
 
-        /* ปรับสไตล์ปุ่มและการจัดเรียง */
         .button-group {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
+            display: flex; gap: 10px; width: 100%;
+            margin-bottom: 25px; flex-wrap: wrap; justify-content: center;
         }
 
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            flex: 1;
-            min-width: 120px;
-            padding: 12px 8px;
-            color: white;
-            border: none;
-            border-radius: 20px; 
-            font-size: 14px;
-            font-family: inherit;
-            cursor: pointer;
-            font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            flex: 1; min-width: calc(33% - 10px); padding: 12px 8px;
+            color: white; border: none; border-radius: 20px; 
+            font-size: 14px; cursor: pointer; font-weight: 500;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.1s, filter 0.2s;
         }
-
-        .btn:hover { filter: brightness(1.1); }
-        .btn:active { transform: scale(0.99); }
 
         .btn-clear { background: linear-gradient(to bottom, #c62828, #b71c1c); }
         .btn-save-data { background: linear-gradient(to bottom, #1565c0, #0d47a1); }
@@ -372,41 +243,49 @@
         .btn-share { background: linear-gradient(to bottom, #8e44ad, #71328c); }
 
         .btn-delete {
-            background: #ff5252;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 12px;
-            transition: background 0.2s;
+            background: #ff5252; color: white; border: none;
+            border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 12px;
         }
-        .btn-delete:hover { background: #e04444; }
 
-        /* ส่วนของตารางสรุปด้านล่าง */
-        .history-section {
-            margin-top: 10px;
-        }
-        .history-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .history-section { margin-top: 10px; width: 100%; }
+        .history-title { font-size: 18px; font-weight: 700; color: var(--text-main); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        
         .table-responsive {
-            width: 100%;
-            overflow-x: auto;
+            width: 100%; overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* เลื่อนลื่นบน iOS */
         }
-        .history-table th {
-            font-size: 13px;
-            padding: 12px 6px;
+        
+        /* ปลดล็อคความกว้างให้ตารางล่างสุดสไลด์ได้ */
+        .history-table {
+            table-layout: auto;
+            min-width: 600px; 
         }
-        .history-table td {
+        .history-table th, .history-table td {
+            white-space: nowrap; 
             font-size: 13px;
-            padding: 12px 6px;
+        }
+
+        /* ====== ปรับแต่งเฉพาะหน้าจอมือถือ (Responsive Mobile) ====== */
+        @media (max-width: 500px) {
+            body { padding: 15px 10px; }
+            .container { padding: 20px 15px; border-radius: 20px; }
+            .mode-toggle-container { top: 15px; right: 15px; }
+            .header-title { font-size: 24px; margin-top: 15px; }
+            
+            table { margin-bottom: 15px; }
+            th, td { padding: 8px 2px; }
+            th { font-size: 11px; }
+            td { font-size: 13px; }
+            
+            input { padding: 8px 5px; font-size: 14px; border-radius: 12px; }
+            
+            .btn { min-width: calc(48% - 5px); padding: 10px 5px; font-size: 13px; border-radius: 15px; }
+            .button-group { gap: 8px; }
+
+            .chart-container { width: 55px; height: 55px; }
+            .chart-number { font-size: 11px; }
+
+            .history-title { font-size: 16px; }
         }
     </style>
 </head>
@@ -434,10 +313,10 @@
     <table>
         <thead>
             <tr>
-                <th class="bg-yellow" style="width: 25%;">ราคาขายประกาศ</th>
-                <th class="bg-yellow" style="width: 25%;">%GP</th>
-                <th class="bg-empty-th" style="width: 25%;">ต้นทุน+Vat</th>
-                <th class="bg-empty-th" style="width: 25%;">ทุนA1</th>
+                <th class="bg-yellow" style="width: 25%;">ราคาประกาศ</th>
+                <th class="bg-yellow" style="width: 20%;">%GP</th>
+                <th class="bg-empty-th" style="width: 28%;">ต้นทุน+Vat</th>
+                <th class="bg-empty-th" style="width: 27%;">ทุนA1</th>
             </tr>
         </thead>
         <tbody>
@@ -459,18 +338,19 @@
     <table>
         <thead>
             <tr>
-                <th class="bg-blue" style="width: 40%;">ราคาที่ต้องการขาย</th>
-                <th class="bg-blue" style="width: 40%;">ต้นทุน+Vat</th>
-                <th class="bg-empty-th" style="width: 20%;">%กำไร</th>
+                <th class="bg-blue" style="width: 35%;">ราคาขายจริง</th>
+                <th class="bg-blue" style="width: 35%;">ต้นทุน+Vat</th>
+                <th class="bg-empty-th" style="width: 30%;">%กำไร</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><input type="number" id="sale_price_2" oninput="calculateTable2()" placeholder="0" min="0" step="any"></td>
                 <td id="cost_link" class="bg-result-normal">0.00</td>
-                <td class="bg-result-normal" style="padding: 5px 0;">
+                <td class="bg-result-normal" style="padding: 2px 0;">
                     <div class="chart-container">
-                        <svg width="70" height="70" viewBox="0 0 70 70">
+                        <!-- ปรับ SVG ให้ขยายตามคอนเทนเนอร์อัตโนมัติ -->
+                        <svg width="100%" height="100%" viewBox="0 0 70 70">
                             <circle class="donut-bg" cx="35" cy="35" r="25" />
                             <circle class="donut-ring" id="donutRing" cx="35" cy="35" r="25" />
                         </svg>
@@ -495,11 +375,11 @@
     </table>
 
     <div class="button-group" data-html2canvas-ignore="true">
-        <button class="btn btn-clear" onclick="clearAll()">คำนวณใหม่ <i class="fa-solid fa-arrows-rotate"></i></button>
-        <button class="btn btn-save-data" onclick="addRecord()">บันทึกข้อมูล <i class="fa-solid fa-floppy-disk"></i></button>
-        <button class="btn btn-capture" onclick="captureScreen()">เซฟรูปภาพ <i class="fa-solid fa-camera"></i></button>
-        <button class="btn btn-excel" onclick="exportToExcel()">โหลด Excel <i class="fa-solid fa-file-excel"></i></button>
-        <button class="btn btn-share" onclick="shareToApps()">แชร์ผลลัพธ์ <i class="fa-solid fa-share-nodes"></i></button>
+        <button class="btn btn-clear" onclick="clearAll()">ล้างค่า <i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="btn btn-save-data" onclick="addRecord()">บันทึก <i class="fa-solid fa-floppy-disk"></i></button>
+        <button class="btn btn-capture" onclick="captureScreen()">เซฟรูป <i class="fa-solid fa-camera"></i></button>
+        <button class="btn btn-excel" onclick="exportToExcel()">Excel <i class="fa-solid fa-file-excel"></i></button>
+        <button class="btn btn-share" onclick="shareToApps()">แชร์ <i class="fa-solid fa-share-nodes"></i></button>
     </div>
 
     <div class="history-section">
@@ -508,14 +388,14 @@
             <table class="history-table">
                 <thead>
                     <tr>
-                        <th class="bg-green-header" style="width: 20%;">ชื่อสินค้า</th>
-                        <th class="bg-green-header" style="width: 14%;">ราคาประกาศ</th>
-                        <th class="bg-green-header" style="width: 10%;">%GP</th>
-                        <th class="bg-green-header" style="width: 14%;">ต้นทุน+Vat</th>
-                        <th class="bg-green-header" style="width: 13%;">ทุนA1</th>
-                        <th class="bg-green-header" style="width: 14%;">ราคาขายจริง</th>
-                        <th class="bg-green-header" style="width: 10%;">%กำไร</th>
-                        <th class="bg-green-header" style="width: 5%;" data-html2canvas-ignore="true">ลบ</th>
+                        <th class="bg-green-header">ชื่อสินค้า</th>
+                        <th class="bg-green-header">ราคาประกาศ</th>
+                        <th class="bg-green-header">%GP</th>
+                        <th class="bg-green-header">ต้นทุน+Vat</th>
+                        <th class="bg-green-header">ทุนA1</th>
+                        <th class="bg-green-header">ราคาขายจริง</th>
+                        <th class="bg-green-header">%กำไร</th>
+                        <th class="bg-green-header" data-html2canvas-ignore="true">ลบ</th>
                     </tr>
                 </thead>
                 <tbody id="history_tbody">
@@ -529,10 +409,8 @@
 </div>
 
 <script>
-// ตัวแปรเก็บอาร์เรย์ของข้อมูลตารางเพื่อใช้กับ Local Storage
 let savedRecords = [];
 
-// เรียกทำงานเมื่อเปิดหน้าเว็บขึ้นมา เพื่อดึงข้อมูลที่เคยเซฟไว้
 window.onload = function() {
     loadSavedRecords();
 };
@@ -540,13 +418,11 @@ window.onload = function() {
 function toggleMode() {
     const body = document.body;
     const checkbox = document.getElementById('checkbox');
-    
     if (checkbox.checked) {
         body.classList.add('dark');
     } else {
         body.classList.remove('dark');
     }
-    
     calculateTable2(); 
     refreshHistoryColors(); 
 }
@@ -558,7 +434,6 @@ function calculateTable1() {
     let gpValue = salePrice1 * (gpPercent / 100);
     let cost = salePrice1 - gpValue;
     
-    // คำนวณ ทุนA1 = ต้นทุน - 7%
     let costA1 = cost - (cost * 0.07);
 
     document.getElementById('gp_value').innerText = gpValue.toFixed(2);
@@ -592,9 +467,7 @@ function calculateTable2() {
     
     let baseShare = salePrice2 !== 0 ? (profitDiff / salePrice2) : 0;
     document.getElementById('profit_percent_base').innerText = baseShare.toFixed(3);
-    
     document.getElementById('profit_diff_final').innerText = profitDiff.toFixed(2);
-    
     document.getElementById('margin_percent_result').innerText = marginPercent.toFixed(2) + "%";
 
     updateDonutChart(marginPercent);
@@ -636,7 +509,7 @@ function addRecord() {
     let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
     let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
     let cost = parseFloat(document.getElementById('cost_result').innerText) || 0;
-    let costA1 = parseFloat(document.getElementById('cost_a1_result').innerText) || 0; // เก็บข้อมูลทุนA1
+    let costA1 = parseFloat(document.getElementById('cost_a1_result').innerText) || 0; 
     let salePrice2 = parseFloat(document.getElementById('sale_price_2').value) || 0;
     
     let marginText = document.getElementById('chartNumber').innerText;
@@ -684,7 +557,6 @@ function renderTable() {
             colorClass = 'text-warning';
         }
 
-        // เพิ่มการป้องกันกรณีข้อมูลเก่าไม่มี costA1
         let a1_cost_display = record.costA1 ? record.costA1 : 0;
 
         tr.innerHTML = `
@@ -748,7 +620,6 @@ function exportToExcel() {
     let wb = XLSX.utils.book_new();
     let ws = XLSX.utils.json_to_sheet(excelData);
     XLSX.utils.book_append_sheet(wb, ws, "สรุปผลต้นทุนและกำไร");
-    
     XLSX.writeFile(wb, "สรุปรายการต้นทุนกำไร.xlsx");
 }
 
@@ -773,7 +644,7 @@ function shareToApps() {
                 .then(() => console.log('แชร์ไฟล์สำเร็จแล้ว'))
                 .catch((error) => console.log('ผู้ใช้ยกเลิกการแชร์ หรือแชร์ไม่สำเร็จ:', error));
             } else {
-                alert("ระบบแชร์อัตโนมัติไม่ทำงานบนอุปกรณ์ชิ้นนี้ ระบบได้ทำการดาวน์โหลดไฟล์รูปภาพลงเครื่องให้คุณนำไปแนบส่งในแอปพลิเคชันแทนแล้วครับ");
+                alert("ระบบแชร์อัตโนมัติไม่ทำงานบนอุปกรณ์ชิ้นนี้ ระบบได้ทำการดาวน์โหลดไฟล์รูปภาพลงเครื่องให้แทนแล้วครับ");
                 const url = URL.createObjectURL(blob);
                 const downloadLink = document.createElement('a');
                 downloadLink.href = url;
