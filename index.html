@@ -434,9 +434,10 @@
     <table>
         <thead>
             <tr>
-                <th class="bg-yellow" style="width: 40%;">ราคาขายประกาศ</th>
-                <th class="bg-yellow" style="width: 40%;">%GP</th>
-                <th class="bg-empty-th" style="width: 20%;">ราคาต้นทุน</th>
+                <th class="bg-yellow" style="width: 25%;">ราคาขายประกาศ</th>
+                <th class="bg-yellow" style="width: 25%;">%GP</th>
+                <th class="bg-empty-th" style="width: 25%;">ต้นทุน+Vat</th>
+                <th class="bg-empty-th" style="width: 25%;">ทุนA1</th>
             </tr>
         </thead>
         <tbody>
@@ -444,11 +445,13 @@
                 <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
                 <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
                 <td id="cost_result" class="bg-result-normal" style="font-weight: bold;">0.00</td>
+                <td id="cost_a1_result" class="bg-result-normal" style="font-weight: bold; color: var(--color-warning);">0.00</td>
             </tr>
             <tr class="hidden-row">
                 <td id="sale_price_1_copy">0.00</td>
                 <td id="gp_percent_copy">0.00%</td>
                 <td id="gp_value">0.00</td>
+                <td></td>
             </tr>
         </tbody>
     </table>
@@ -457,7 +460,7 @@
         <thead>
             <tr>
                 <th class="bg-blue" style="width: 40%;">ราคาที่ต้องการขาย</th>
-                <th class="bg-blue" style="width: 40%;">ราคาต้นทุน</th>
+                <th class="bg-blue" style="width: 40%;">ต้นทุน+Vat</th>
                 <th class="bg-empty-th" style="width: 20%;">%กำไร</th>
             </tr>
         </thead>
@@ -505,18 +508,19 @@
             <table class="history-table">
                 <thead>
                     <tr>
-                        <th class="bg-green-header" style="width: 25%;">ชื่อสินค้า</th>
-                        <th class="bg-green-header" style="width: 15%;">ราคาประกาศ</th>
-                        <th class="bg-green-header" style="width: 12%;">%GP</th>
-                        <th class="bg-green-header" style="width: 15%;">ต้นทุน</th>
-                        <th class="bg-green-header" style="width: 15%;">ราคาขายจริง</th>
-                        <th class="bg-green-header" style="width: 13%;">%กำไร</th>
+                        <th class="bg-green-header" style="width: 20%;">ชื่อสินค้า</th>
+                        <th class="bg-green-header" style="width: 14%;">ราคาประกาศ</th>
+                        <th class="bg-green-header" style="width: 10%;">%GP</th>
+                        <th class="bg-green-header" style="width: 14%;">ต้นทุน+Vat</th>
+                        <th class="bg-green-header" style="width: 13%;">ทุนA1</th>
+                        <th class="bg-green-header" style="width: 14%;">ราคาขายจริง</th>
+                        <th class="bg-green-header" style="width: 10%;">%กำไร</th>
                         <th class="bg-green-header" style="width: 5%;" data-html2canvas-ignore="true">ลบ</th>
                     </tr>
                 </thead>
                 <tbody id="history_tbody">
                     <tr id="empty_row">
-                        <td colspan="7" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
+                        <td colspan="8" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
                     </tr>
                 </tbody>
             </table>
@@ -553,11 +557,16 @@ function calculateTable1() {
     
     let gpValue = salePrice1 * (gpPercent / 100);
     let cost = salePrice1 - gpValue;
+    
+    // คำนวณ ทุนA1 = ต้นทุน - 7%
+    let costA1 = cost - (cost * 0.07);
 
     document.getElementById('gp_value').innerText = gpValue.toFixed(2);
     document.getElementById('sale_price_1_copy').innerText = salePrice1.toFixed(2);
     document.getElementById('gp_percent_copy').innerText = gpPercent.toFixed(2) + "%";
+    
     document.getElementById('cost_result').innerText = cost.toFixed(2);
+    document.getElementById('cost_a1_result').innerText = costA1.toFixed(2);
     
     document.getElementById('cost_link').innerText = cost.toFixed(2);
 
@@ -622,38 +631,37 @@ function updateDonutChart(percent) {
     ring.style.strokeDashoffset = offset;
 }
 
-// แก้ไขฟังก์ชันบันทึกข้อมูลให้เชื่อมต่อระบบ Local Storage
 function addRecord() {
     let pName = document.getElementById('product_name').value.trim() || "สินค้าไม่ได้ระบุชื่อ";
     let salePrice1 = parseFloat(document.getElementById('sale_price_1').value) || 0;
     let gpPercent = parseFloat(document.getElementById('gp_percent').value) || 0;
     let cost = parseFloat(document.getElementById('cost_result').innerText) || 0;
+    let costA1 = parseFloat(document.getElementById('cost_a1_result').innerText) || 0; // เก็บข้อมูลทุนA1
     let salePrice2 = parseFloat(document.getElementById('sale_price_2').value) || 0;
     
     let marginText = document.getElementById('chartNumber').innerText;
     let marginPercent = parseFloat(marginText.replace('%', '')) || 0;
 
-    // สร้างก้อนข้อมูลวัตถุเพื่อนำไปบันทึก
     let record = {
-        id: Date.now(), // ใช้ timestamp ป้องกัน id ซ้ำกัน
+        id: Date.now(), 
         name: pName,
         price1: salePrice1,
         gp: gpPercent,
         cost: cost,
+        costA1: costA1,
         price2: salePrice2,
         margin: marginPercent
     };
 
     savedRecords.push(record);
-    localStorage.setItem('profit_calc_records', JSON.stringify(savedRecords)); // บันทึกลงเครื่องทันที
+    localStorage.setItem('profit_calc_records', JSON.stringify(savedRecords)); 
 
-    renderTable(); // วาดตารางสรุปผลใหม่
+    renderTable(); 
 
     document.getElementById('product_name').value = '';
     document.getElementById('product_name').focus();
 }
 
-// ฟังก์ชันสร้างแถวตารางจากอาร์เรย์ข้อมูล
 function renderTable() {
     let tbody = document.getElementById('history_tbody');
     tbody.innerHTML = '';
@@ -661,7 +669,7 @@ function renderTable() {
     if (savedRecords.length === 0) {
         tbody.innerHTML = `
             <tr id="empty_row">
-                <td colspan="7" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
+                <td colspan="8" style="text-align: center; color: #999; font-style: italic;">ยังไม่มีข้อมูลที่บันทึกไว้</td>
             </tr>
         `;
         return;
@@ -676,11 +684,15 @@ function renderTable() {
             colorClass = 'text-warning';
         }
 
+        // เพิ่มการป้องกันกรณีข้อมูลเก่าไม่มี costA1
+        let a1_cost_display = record.costA1 ? record.costA1 : 0;
+
         tr.innerHTML = `
-            <td style="text-align: canter; font-weight: 500;">${record.name}</td>
+            <td style="text-align: center; font-weight: 500;">${record.name}</td>
             <td>${record.price1.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.gp.toFixed(2)}%</td>
             <td style="font-weight: 500;">${record.cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="color: var(--color-warning);">${a1_cost_display.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.price2.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td class="${colorClass}" style="font-weight: bold;" data-margin="${record.margin}">${record.margin.toFixed(2)}%</td>
             <td data-html2canvas-ignore="true"><button class="btn-delete" onclick="deleteRecord(${record.id})"><i class="fa-solid fa-trash-can"></i></button></td>
@@ -689,14 +701,12 @@ function renderTable() {
     });
 }
 
-// ฟังก์ชันลบข้อมูลหลักตาม id และอัปเดต Local Storage
 function deleteRecord(id) {
     savedRecords = savedRecords.filter(r => r.id !== id);
     localStorage.setItem('profit_calc_records', JSON.stringify(savedRecords));
     renderTable();
 }
 
-// โหลดข้อมูลเก่าจากเครื่องมาแสดงตอนเปิดเว็บใหม่
 function loadSavedRecords() {
     let data = localStorage.getItem('profit_calc_records');
     if (data) {
@@ -706,7 +716,7 @@ function loadSavedRecords() {
 }
 
 function refreshHistoryColors() {
-    renderTable(); // เรียกใช้วาดตารางใหม่เพื่อให้คลาสสีเปลี่ยนตามโหมดมืด-สว่างได้เสถียรที่สุด
+    renderTable(); 
 }
 
 function clearAll() {
@@ -719,19 +729,18 @@ function clearAll() {
     document.getElementById('product_name').focus();
 }
 
-// --- ฟังก์ชันเสริม: ส่งออกเป็นไฟล์ Excel ไร้บั๊กเพี้ยน ---
 function exportToExcel() {
     if(savedRecords.length === 0) {
         alert("กรุณาบันทึกข้อมูลลงตารางสรุปผลก่อนส่งออกเป็น Excel ครับ!");
         return;
     }
 
-    // จัดระเบียบหัวข้อคอลัมน์ของไฟล์ Excel
     let excelData = savedRecords.map(item => ({
         "ชื่อสินค้า": item.name,
         "ราคาขายประกาศ": item.price1,
         "เปอร์เซ็นต์ GP": item.gp + "%",
-        "ราคาต้นทุน": item.cost,
+        "ต้นทุน+Vat": item.cost,
+        "ทุนA1": item.costA1 || 0,
         "ราคาขายจริง": item.price2,
         "เปอร์เซ็นต์กำไร": item.margin + "%"
     }));
@@ -740,11 +749,9 @@ function exportToExcel() {
     let ws = XLSX.utils.json_to_sheet(excelData);
     XLSX.utils.book_append_sheet(wb, ws, "สรุปผลต้นทุนและกำไร");
     
-    // บันทึกและดาวน์โหลดลงอุปกรณ์เครื่องผู้ใช้
     XLSX.writeFile(wb, "สรุปรายการต้นทุนกำไร.xlsx");
 }
 
-// --- ฟังก์ชันเสริม: แปลงรูปภาพและเรียกแอปแชร์อัตโนมัติ (LINE/Facebook) ---
 function shareToApps() {
     const targetElement = document.getElementById('capture-area');
     const currentContainerBg = window.getComputedStyle(targetElement).backgroundColor;
@@ -756,7 +763,6 @@ function shareToApps() {
         logging: false
     }).then(canvas => {
         canvas.toBlob(function(blob) {
-            // เช็คว่าระบบของเบราว์เซอร์รองรับการกดส่งไฟล์แชร์โดยตรงหรือไม่
             if (navigator.canShare && navigator.share) {
                 const file = new File([blob], "ผลคำนวณต้นทุนกำไร.png", { type: "image/png" });
                 navigator.share({
@@ -767,7 +773,6 @@ function shareToApps() {
                 .then(() => console.log('แชร์ไฟล์สำเร็จแล้ว'))
                 .catch((error) => console.log('ผู้ใช้ยกเลิกการแชร์ หรือแชร์ไม่สำเร็จ:', error));
             } else {
-                // หากรันบนคอมพิวเตอร์ทั่วไปที่ระบบ Native Share ไม่ทำงาน จะใช้วิธีดาวน์โหลดภาพให้อัตโนมัติแทน
                 alert("ระบบแชร์อัตโนมัติไม่ทำงานบนอุปกรณ์ชิ้นนี้ ระบบได้ทำการดาวน์โหลดไฟล์รูปภาพลงเครื่องให้คุณนำไปแนบส่งในแอปพลิเคชันแทนแล้วครับ");
                 const url = URL.createObjectURL(blob);
                 const downloadLink = document.createElement('a');
