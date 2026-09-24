@@ -150,7 +150,31 @@
             border-bottom-right-radius: 20px;
         }
 
-        /* --- สวิตช์โหมดมืด --- */
+        /* --- ปุ่มคู่มือมุมซ้ายบน --- */
+        .manual-btn-top {
+            position: absolute; 
+            top: 15px; 
+            left: 15px; 
+            z-index: 10;
+            background: linear-gradient(to bottom, var(--btn-gold-start), var(--btn-gold-end));
+            color: #5a2e1c;
+            border: 1px solid #d4af37;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(166, 26, 26, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.1s, filter 0.2s;
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        .manual-btn-top:active { transform: scale(0.95); }
+        .manual-btn-top:hover { filter: brightness(1.1); }
+
+        /* --- สวิตช์โหมดมืดมุมขวาบน --- */
         .mode-toggle-container {
             position: absolute; top: 15px; right: 15px; z-index: 10;
         }
@@ -178,7 +202,8 @@
         .header-title {
             font-size: 26px; font-weight: 700;
             color: var(--text-main); text-align: center;
-            margin-top: 25px; margin-bottom: 5px;
+            margin-top: 35px; /* ดันลงมาหลบปุ่มซ้าย-ขวา */
+            margin-bottom: 5px;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
         }
         body.dark .header-title { text-shadow: 1px 1px 0px rgba(0,0,0,0.8); }
@@ -271,7 +296,7 @@
 
         /* --- ปุ่มกด --- */
         .button-group {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; 
             width: 100%; margin-bottom: 35px;
         }
 
@@ -282,6 +307,8 @@
             box-shadow: 0 4px 8px rgba(166, 26, 26, 0.2);
             border: 1px solid rgba(212, 175, 55, 0.5); 
             transition: transform 0.1s, filter 0.2s;
+            flex: 1 1 calc(33% - 12px); /* ให้จัดเรียงแบบยืดหยุ่น */
+            min-width: 90px;
         }
         .btn:active { transform: scale(0.97); }
         .btn:hover { filter: brightness(1.1); }
@@ -290,7 +317,7 @@
         .btn-save-data { background: linear-gradient(to bottom, var(--btn-gold-start), var(--btn-gold-end)); color: #5a2e1c; border: 1px solid #d4af37; }
         .btn-capture { background: linear-gradient(to bottom, var(--btn-red-start), var(--btn-red-end)); color: white; }
         .btn-excel { background: linear-gradient(to bottom, var(--btn-red-start), var(--btn-red-end)); color: white; }
-        .btn-share { background: linear-gradient(to bottom, var(--btn-red-start), var(--btn-red-end)); color: white; grid-column: span 2; }
+        .btn-share { background: linear-gradient(to bottom, var(--btn-red-start), var(--btn-red-end)); color: white; }
 
         .btn-delete {
             background: #cc2525; color: white; border: 1px solid #a61a1a;
@@ -327,6 +354,34 @@
         }
         td input:focus { border-color: var(--table-border); box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3); }
 
+        /* --- Modal คู่มือ --- */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.75);
+            backdrop-filter: blur(3px);
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background-color: var(--bg-container);
+            padding: 15px; border-radius: 20px;
+            max-width: 90%; max-height: 85vh; overflow-y: auto;
+            position: relative; border: 3px solid var(--table-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .modal-content img {
+            max-width: 100%; height: auto; border-radius: 10px;
+            display: block; margin: 0 auto;
+        }
+        .close-btn {
+            position: absolute; top: -10px; right: -10px;
+            background: var(--text-main); color: #fde49d;
+            width: 35px; height: 35px; border-radius: 50%;
+            font-size: 24px; font-weight: bold; line-height: 35px;
+            cursor: pointer; border: 2px solid #fde49d;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
         @media (max-width: 500px) {
             body { padding: 15px 10px; }
             .header-title { font-size: 24px; }
@@ -342,6 +397,12 @@
 <div class="decor-bottom" data-html2canvas-ignore="true">🌸</div>
 
 <div class="container" id="capture-area">
+    
+    <!-- ปุ่มคู่มือมุมซ้ายบน -->
+    <button class="manual-btn-top" onclick="openManual()" data-html2canvas-ignore="true">
+        <i class="fa-solid fa-book-open"></i> คู่มือ
+    </button>
+
     <div class="mode-toggle-container" data-html2canvas-ignore="true">
         <label class="theme-switch" for="checkbox">
             <input type="checkbox" id="checkbox" onclick="toggleMode()" />
@@ -428,6 +489,7 @@
         </table>
     </div>
 
+    <!-- กลุ่มปุ่มเหลือ 5 ปุ่ม จัดเรียงแบบยืดหยุ่น -->
     <div class="button-group" data-html2canvas-ignore="true">
         <button class="btn btn-clear" onclick="clearAll()">เคลียร์ <i class="fa-solid fa-arrows-rotate"></i></button>
         <button class="btn btn-save-data" onclick="addRecord()">บันทึก <i class="fa-solid fa-floppy-disk"></i></button>
@@ -459,6 +521,14 @@
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- โครงสร้าง Modal สำหรับคู่มือ -->
+<div id="manualModal" class="modal" data-html2canvas-ignore="true">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeManual()">&times;</span>
+        <img src="mon885.jpg" alt="คู่มือการใช้งาน">
     </div>
 </div>
 
@@ -698,6 +768,23 @@ function downloadCanvas(blob) {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     setTimeout(() => { document.body.removeChild(downloadLink); URL.revokeObjectURL(url); }, 100);
+}
+
+// ฟังก์ชันเปิด/ปิด Modal คู่มือ
+function openManual() {
+    document.getElementById('manualModal').style.display = 'flex';
+}
+
+function closeManual() {
+    document.getElementById('manualModal').style.display = 'none';
+}
+
+// ปิดเมื่อคลิกพื้นที่ว่างนอกรูป
+window.onclick = function(event) {
+    const modal = document.getElementById('manualModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 }
 </script>
 
