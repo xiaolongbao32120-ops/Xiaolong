@@ -369,22 +369,22 @@
                 <tr>
                     <th style="width: 25%;">ราคาประกาศ</th>
                     <th style="width: 20%;">%GP</th>
-                    <th style="width: 28%;">ต้นทุน+Vat</th>
                     <th style="width: 27%;">ทุนA1</th>
+                    <th style="width: 28%;">ต้นทุน+Vat</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><input type="number" id="sale_price_1" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
                     <td><input type="number" id="gp_percent" oninput="calculateTable1()" placeholder="0" min="0" step="any"></td>
-                    <td id="cost_result" class="bg-result-normal">0.00</td>
                     <td id="cost_a1_result" class="bg-result-normal">0.00</td>
+                    <td id="cost_result" class="bg-result-normal">0.00</td>
                 </tr>
                 <tr class="hidden-row">
                     <td id="sale_price_1_copy">0.00</td>
                     <td id="gp_percent_copy">0.00%</td>
-                    <td id="gp_value">0.00</td>
                     <td></td>
+                    <td id="gp_value">0.00</td>
                 </tr>
             </tbody>
         </table>
@@ -445,8 +445,8 @@
                         <th>ชื่อสินค้า</th>
                         <th>ราคาประกาศ</th>
                         <th>%GP</th>
-                        <th>ต้นทุน+Vat</th>
                         <th>ทุนA1</th>
+                        <th>ต้นทุน+Vat</th>
                         <th>ราคาขายจริง</th>
                         <th>%กำไร</th>
                         <th data-html2canvas-ignore="true">ลบ</th>
@@ -607,8 +607,8 @@ function renderTable() {
             <td style="text-align: left; font-weight: 600; color: var(--text-muted);">${record.name}</td>
             <td>${record.price1.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.gp.toFixed(2)}%</td>
-            <td style="font-weight: 500;">${record.cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${a1_cost_display.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="font-weight: 500;">${record.cost.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td>${record.price2.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td style="font-weight: bold; color: ${marginColor};">${record.margin.toFixed(2)}%</td>
             <td data-html2canvas-ignore="true"><button class="btn-delete" onclick="deleteRecord(${record.id})"><i class="fa-solid fa-trash-can"></i></button></td>
@@ -652,8 +652,8 @@ function exportToExcel() {
         "ชื่อสินค้า": item.name,
         "ราคาขายประกาศ": item.price1,
         "เปอร์เซ็นต์ GP": item.gp + "%",
-        "ต้นทุน+Vat": item.cost,
         "ทุนA1": item.costA1 || 0,
+        "ต้นทุน+Vat": item.cost,
         "ราคาขายจริง": item.price2,
         "เปอร์เซ็นต์กำไร": item.margin + "%"
     }));
