@@ -415,11 +415,11 @@
                 <div class="pr-6">
                     <strong class="text-china-dark dark:text-white">${app1CalculatedData.name}</strong>
                     <div class="text-[10px] text-china-gray dark:text-gray-300">
-                        ทุน+Vat: ${app1CalculatedData.costVat.toFixed(2)} | ทุน A1: ${app1CalculatedData.costA1.toFixed(2)}
+                        ราคาขายจริง: ${app1CalculatedData.sellPrice.toFixed(2)} ฿ | ทุน+Vat: ${app1CalculatedData.costVat.toFixed(2)} | ทุน A1: ${app1CalculatedData.costA1.toFixed(2)}
                     </div>
                 </div>
                 <div class="text-right pr-6">
-                    <span class="font-extrabold ${pctColor} block">${app1CalculatedData.profitPct.toFixed(2)}%</span>
+                    <span class="font-extrabold ${pctColor} block">GP ${app1CalculatedData.profitPct.toFixed(2)}%</span>
                 </div>
                 <button onclick="this.closest('.history-card').remove(); if(document.getElementById('app1-history-list').children.length === 0) document.getElementById('app1-history-section').classList.add('hidden');" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="ลบรายการนี้">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
