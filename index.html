@@ -50,15 +50,15 @@
     <style>
         .item-grid {
             display: grid;
-            grid-template-columns: 2fr 0.9fr 1.4fr 1.1fr 30px;
-            gap: 4px;
+            grid-template-columns: 2fr 0.7fr 1.2fr 1fr 28px;
+            gap: 3px;
             align-items: center;
         }
 
         @media (min-width: 400px) {
             .item-grid {
-                grid-template-columns: 2fr 1fr 1.5fr 1.2fr 34px;
-                gap: 6px;
+                grid-template-columns: 2fr 0.8fr 1.4fr 1.1fr 32px;
+                gap: 5px;
             }
         }
 
@@ -79,19 +79,19 @@
     </style>
 </head>
 
-<body class="bg-gradient-to-br from-china-darkred to-china-red min-h-screen py-4 px-2 sm:px-4 text-china-dark antialiased dark:from-gray-900 dark:to-china-dark transition-colors duration-300 flex flex-col justify-between">
+<body class="bg-gradient-to-br from-china-darkred to-china-red min-h-screen py-3 px-2 text-china-dark antialiased dark:from-gray-900 dark:to-china-dark transition-colors duration-300 flex flex-col justify-between overflow-x-hidden">
 
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-3 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 w-full max-w-sm px-3"></div>
 
-    <div class="w-full max-w-[480px] sm:max-w-[520px] mx-auto my-auto">
+    <div class="w-full max-w-[480px] sm:max-w-[520px] mx-auto my-auto box-border">
         
        <!-- App Switcher Navigation -->
-        <div class="mb-3.5 bg-china-cream/90 dark:bg-gray-800/90 p-1.5 rounded-2xl shadow-lg border border-china-gold/40 flex items-center justify-between gap-1 backdrop-blur-sm">
-            <button id="nav-app1" onclick="switchApp('app1')" class="flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md">
+        <div class="mb-3 bg-china-cream/90 dark:bg-gray-800/90 p-1.5 rounded-2xl shadow-lg border border-china-gold/40 flex items-center justify-between gap-1 backdrop-blur-sm">
+            <button id="nav-app1" onclick="switchApp('app1')" class="flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md">
                 🏮คำนวณหา GP🏮
             </button>
-            <button id="nav-app2" onclick="switchApp('app2')" class="flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50">
+            <button id="nav-app2" onclick="switchApp('app2')" class="flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50">
                 🏮Mix Margin🏮
             </button>
             <button onclick="toggleDarkMode()" class="p-2 rounded-xl border border-china-gold/40 text-china-dark dark:text-china-gold hover:bg-china-lightgold/30 transition-all" title="สลับโหมดมืด/สว่าง">
@@ -100,74 +100,74 @@
         </div>
 
         <!-- APP 1: คำนวณต้นทุน และ ทุน A1 -->
-        <div id="app1-section" class="bg-china-cream dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all">
+        <div id="app1-section" class="bg-china-cream dark:bg-gray-800 p-3.5 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all">
             <div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-china-gold rounded-tl-xl opacity-30 pointer-events-none"></div>
             <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-china-gold rounded-tr-xl opacity-30 pointer-events-none"></div>
 
-            <div class="flex justify-between items-center mb-4">
+            <div class="flex justify-between items-center mb-3">
                 <h2 class="text-base sm:text-lg font-bold text-china-red dark:text-china-gold flex items-center gap-2">
                     หลงเปาพาคำนวณ
                 </h2>
             </div>
 
             <!-- Form 1: Calculate Cost & A1 -->
-            <div class="space-y-2.5 bg-white dark:bg-gray-700/50 p-3.5 rounded-xl border border-china-gold/30">
+            <div class="space-y-2 bg-white dark:bg-gray-700/50 p-3 rounded-xl border border-china-gold/30">
                 <h3 class="text-xs font-bold text-china-red dark:text-china-gold uppercase tracking-wider">1. คำนวณต้นทุน และ ทุน A1</h3>
                 <div>
                     <label class="block text-[11px] font-medium dark:text-gray-200 mb-1">ชื่อสินค้า</label>
-                    <input type="text" id="app1-name" placeholder="ชื่อสินค้าที่อยากคำนวณ" oninput="calcApp1()" class="w-full px-3 py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red">
+                    <input type="text" id="app1-name" placeholder="ชื่อสินค้าที่อยากคำนวณ" oninput="calcApp1()" class="w-full px-2.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red box-border">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-medium dark:text-gray-200 mb-1">ราคาประกาศ (บาท)</label>
-                        <input type="number" id="app1-declared-price" placeholder="0.00" oninput="if(this.value<0)this.value=0; calcApp1()" class="w-full px-3 py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red">
+                        <input type="number" id="app1-declared-price" placeholder="0.00" oninput="if(this.value<0)this.value=0; calcApp1()" class="w-full px-2.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red box-border">
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium dark:text-gray-200 mb-1">% GP</label>
-                        <input type="number" id="app1-gp-pct" placeholder="0" oninput="calcApp1()" class="w-full px-3 py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red">
+                        <input type="number" id="app1-gp-pct" placeholder="0" oninput="calcApp1()" class="w-full px-2.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red box-border">
                     </div>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 pt-2 border-t border-dashed border-china-gold/30 text-xs">
-                    <div class="bg-china-cream dark:bg-gray-800 p-2 rounded-lg border border-china-gold/20">
-                        <span class="text-china-gray dark:text-gray-400 block text-[10px]">ต้นทุน + Vat 7%</span>
-                        <strong id="app1-cost-vat" class="text-china-dark dark:text-white text-sm">0.00</strong> บาท
+                    <div class="bg-china-cream dark:bg-gray-800 p-2 rounded-lg border border-china-gold/20 overflow-hidden">
+                        <span class="text-china-gray dark:text-gray-400 block text-[10px] truncate">ต้นทุน + Vat 7%</span>
+                        <strong id="app1-cost-vat" class="text-china-dark dark:text-white text-xs sm:text-sm break-all">0.00</strong> <span class="text-[10px]">บาท</span>
                     </div>
-                    <div class="bg-china-cream dark:bg-gray-800 p-2 rounded-lg border border-china-gold/20">
-                        <span class="text-china-gray dark:text-gray-400 block text-[10px]">ทุน A1</span>
-                        <strong id="app1-cost-a1" class="text-china-red dark:text-china-gold text-sm">0.00</strong> บาท
+                    <div class="bg-china-cream dark:bg-gray-800 p-2 rounded-lg border border-china-gold/20 overflow-hidden">
+                        <span class="text-china-gray dark:text-gray-400 block text-[10px] truncate">ทุน A1</span>
+                        <strong id="app1-cost-a1" class="text-china-red dark:text-china-gold text-xs sm:text-sm break-all">0.00</strong> <span class="text-[10px]">บาท</span>
                     </div>
                 </div>
             </div>
 
             <!-- Form 2: Selling Price & Profit Donut -->
-            <div class="mt-3.5 space-y-2.5 bg-white dark:bg-gray-700/50 p-3.5 rounded-xl border border-china-gold/30">
+            <div class="mt-3 space-y-2 bg-white dark:bg-gray-700/50 p-3 rounded-xl border border-china-gold/30">
                 <h3 class="text-xs font-bold text-china-red dark:text-china-gold uppercase tracking-wider">2. คำนวณ % กำไรจากการขายจริง</h3>
                 <div>
                     <label class="block text-[11px] font-medium dark:text-gray-200 mb-1">ราคาขายจริง (บาท)</label>
-                    <input type="number" id="app1-sell-price" placeholder="0.00" oninput="if(this.value<0)this.value=0; calcApp1()" class="w-full px-3 py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red">
+                    <input type="number" id="app1-sell-price" placeholder="0.00" oninput="if(this.value<0)this.value=0; calcApp1()" class="w-full px-2.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red box-border">
                 </div>
 
                 <!-- Donut Chart Display -->
-                <div class="flex items-center justify-around pt-1">
-                    <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+                <div class="flex items-center justify-around pt-1 gap-2">
+                    <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0">
                         <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                             <path class="text-gray-200 dark:text-gray-600" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             <path id="app1-donut-path" class="text-china-red transition-all duration-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                         </svg>
-                        <div class="absolute text-center">
-                            <span id="app1-profit-pct" class="text-sm sm:text-base font-extrabold text-china-dark dark:text-white">0.00%</span>
+                        <div class="absolute text-center px-1 overflow-hidden">
+                            <span id="app1-profit-pct" class="text-xs sm:text-sm font-extrabold text-china-dark dark:text-white break-all">0.00%</span>
                         </div>
                     </div>
-                    <div class="text-xs space-y-1">
-                        <div><span class="text-china-gray dark:text-gray-400">กำไรสุทธิ:</span> <strong id="app1-profit-val" class="text-china-red dark:text-china-gold">0.00</strong> บาท</div>
-                        <div><span class="text-china-gray dark:text-gray-400">สถานะ:</span> <span id="app1-status" class="font-bold text-gray-500">-</span></div>
+                    <div class="text-xs space-y-1 min-w-0 flex-1">
+                        <div class="truncate"><span class="text-china-gray dark:text-gray-400">กำไรสุทธิ:</span> <strong id="app1-profit-val" class="text-china-red dark:text-china-gold break-all">0.00</strong> บาท</div>
+                        <div class="truncate"><span class="text-china-gray dark:text-gray-400">สถานะ:</span> <span id="app1-status" class="font-bold text-gray-500">-</span></div>
                     </div>
                 </div>
             </div>
 
             <!-- Actions -->
-            <div class="flex gap-2 mt-4">
+            <div class="flex gap-2 mt-3">
                 <button onclick="clearApp1()" class="flex-1 bg-china-lightgold text-china-dark border border-china-gold/50 py-2 rounded-lg text-xs font-semibold hover:bg-[#f6e19c]">เคลียร์ข้อมูล</button>
                 <button onclick="saveHistoryApp1()" class="flex-1 bg-gradient-to-r from-china-darkred to-china-red text-white py-2 rounded-lg text-xs font-semibold shadow-glow hover:opacity-90">บันทึกประวัติ</button>
             </div>
@@ -178,11 +178,11 @@
             </div>
 
             <!-- History App 1 -->
-            <div id="app1-history-section" class="mt-4 pt-3 border-t border-china-gold/30 hidden relative">
+            <div id="app1-history-section" class="mt-3 pt-3 border-t border-china-gold/30 hidden relative">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-xs font-bold text-china-red dark:text-china-gold">ประวัติการคำนวณต้นทุน</h3>
                     <button onclick="clearAllHistoryApp1()" class="text-[10px] bg-red-50 dark:bg-red-900/30 text-red-500 border border-red-200 dark:border-red-800/50 px-2 py-0.5 rounded hover:bg-red-100 transition-colors flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        <svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         ลบทั้งหมด
                     </button>
                 </div>
@@ -191,47 +191,47 @@
         </div>
 
         <!-- APP 2: หลงเปามิกซ์ Mix Margin -->
-        <div id="app2-section" class="bg-china-cream dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all hidden">
+        <div id="app2-section" class="bg-china-cream dark:bg-gray-800 p-3.5 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all hidden">
             <div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-china-gold rounded-tl-xl opacity-30 pointer-events-none"></div>
             <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-china-gold rounded-tr-xl opacity-30 pointer-events-none"></div>
 
-            <h3 class="text-lg sm:text-xl font-bold text-center text-china-red dark:text-china-gold mb-4 flex items-center justify-center gap-2 tracking-wide">
+            <h3 class="text-base sm:text-xl font-bold text-center text-china-red dark:text-china-gold mb-3 flex items-center justify-center gap-2 tracking-wide">
                 <span>福</span> หลงเปา Mix Margin <span>禄</span>
             </h3>
             
-            <div class="item-grid text-[10px] sm:text-[11px] font-semibold text-china-red/80 dark:text-china-gold mb-1.5 px-0.5 uppercase tracking-wider">
-                <div>สินค้า</div>
-                <div class="text-center">ชิ้น</div>
-                <div>ราคา/ชิ้น</div>
-                <div>GP</div>
+            <div class="item-grid text-[10px] sm:text-[11px] font-semibold text-china-red/80 dark:text-china-gold mb-1 px-0.5 uppercase tracking-wider">
+                <div class="truncate">สินค้า</div>
+                <div class="text-center truncate">ชิ้น</div>
+                <div class="truncate">ราคา/ชิ้น</div>
+                <div class="truncate">GP</div>
                 <div></div>
             </div>
 
             <div id="item-list" class="flex flex-col gap-2 relative z-10">
                 <div class="item-grid row">
-                    <input type="text" placeholder="สินค้า 1" class="name w-full px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="calcApp2()">
-                    <input type="number" min="0" placeholder="0" class="qty w-full px-1.5 sm:px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red text-center" oninput="if(this.value<0)this.value=0; calcApp2()">
-                    <input type="number" min="0" placeholder="0" class="price w-full px-1.5 sm:px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="if(this.value<0)this.value=0; calcApp2()">
+                    <input type="text" placeholder="สินค้า 1" class="name w-full px-1.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()">
+                    <input type="number" min="0" placeholder="0" class="qty w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red text-center box-border" oninput="if(this.value<0)this.value=0; calcApp2()">
+                    <input type="number" min="0" placeholder="0" class="price w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="if(this.value<0)this.value=0; calcApp2()">
                     <div class="relative flex items-center">
-                        <input type="number" placeholder="0" class="profit w-full pl-1.5 pr-4 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="calcApp2()">
+                        <input type="number" placeholder="0" class="profit w-full pl-1 pr-3.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()">
                         <span class="absolute right-1 text-china-gray text-[9px] pointer-events-none">%</span>
                     </div>
-                    <button class="w-[30px] h-[30px] sm:w-[34px] sm:h-[34px] flex items-center justify-center border border-china-gold/40 rounded-lg text-china-gray hover:bg-red-50 hover:text-china-red mx-auto" onclick="removeRowApp2(this)" title="ลบแถว">
-                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                    <button class="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] flex items-center justify-center border border-china-gold/40 rounded-lg text-china-gray hover:bg-red-50 hover:text-china-red mx-auto shrink-0" onclick="removeRowApp2(this)" title="ลบแถว">
+                        <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
                     </button>
                 </div>
             </div>
 
-            <div class="mt-3 relative z-10">
-                <button class="w-full sm:w-auto px-4 py-1.5 bg-transparent border border-china-gold text-china-red dark:text-china-gold font-medium rounded-lg text-xs hover:bg-china-lightgold/50 transition-colors flex items-center justify-center gap-1 mx-auto" onclick="addRowApp2()">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            <div class="mt-2.5 relative z-10">
+                <button class="w-full sm:w-auto px-3 py-1.5 bg-transparent border border-china-gold text-china-red dark:text-china-gold font-medium rounded-lg text-xs hover:bg-china-lightgold/50 transition-colors flex items-center justify-center gap-1 mx-auto" onclick="addRowApp2()">
+                    <svg class="h-3 w-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     เพิ่มสินค้า
                 </button>
             </div>
 
-            <div class="mt-4 bg-china-lightgold/50 dark:bg-gray-700/50 p-3 border border-china-gold/40 rounded-xl relative z-10">
-                <label class="block text-xs font-semibold text-china-red dark:text-china-gold mb-1.5 uppercase tracking-wide">คูปองส่วนลด</label>
-                <select id="coupon-select" class="w-full px-2.5 py-2 border border-china-gold/50 rounded-lg text-xs sm:text-sm bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red cursor-pointer shadow-sm transition-all" onchange="calcApp2()">
+            <div class="mt-3 relative z-10">
+                <label class="block text-xs font-semibold text-china-red dark:text-china-gold mb-1 uppercase tracking-wide">คูปองส่วนลด</label>
+                <select id="coupon-select" class="w-full px-2 py-1.5 border border-china-gold/50 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red cursor-pointer shadow-sm transition-all box-border" onchange="calcApp2()">
                     <option value="0">ไม่ใช้คูปอง</option>
                     <option value="25">คูปอง 1,000 ลด 25 บาท</option>
                     <option value="55">คูปอง 2,000 ลด 55 บาท</option>
@@ -241,23 +241,23 @@
                 </select>
             </div>
 
-            <div class="flex gap-2 mt-4 pt-4 border-t border-china-gold/30 relative z-10">
-                <button class="flex-1 bg-china-lightgold text-china-dark border border-china-gold/50 py-2 rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#f6e19c]" onclick="clearAllApp2()">เคลียร์ข้อมูล</button>
-                <button class="flex-1 bg-gradient-to-r from-china-darkred to-china-red text-white py-2 rounded-lg text-xs sm:text-sm font-semibold shadow-glow hover:opacity-90" onclick="saveHistoryApp2()">บันทึกข้อมูล</button>
+            <div class="flex gap-2 mt-3 pt-3 border-t border-china-gold/30 relative z-10">
+                <button class="flex-1 bg-china-lightgold text-china-dark border border-china-gold/50 py-2 rounded-lg text-xs font-semibold hover:bg-[#f6e19c]" onclick="clearAllApp2()">เคลียร์ข้อมูล</button>
+                <button class="flex-1 bg-gradient-to-r from-china-darkred to-china-red text-white py-2 rounded-lg text-xs font-semibold shadow-glow hover:opacity-90" onclick="saveHistoryApp2()">บันทึกข้อมูล</button>
             </div>
 
             <!-- Results Section App 2 -->
-            <div class="mt-4 bg-white dark:bg-gray-700 border-2 border-china-gold/30 rounded-xl p-3.5 sm:p-4 shadow-sm relative overflow-hidden z-10">
-                <div class="text-center text-[10px] sm:text-[11px] font-bold text-china-gray dark:text-gray-300 uppercase tracking-wider mb-0.5" id="avg-title">กำไรเฉลี่ยสุทธิ</div>
-                <div class="text-center text-3xl sm:text-4xl font-extrabold mb-2.5 text-china-red dark:text-china-gold drop-shadow-sm" id="avg-result">0.00%</div>
+            <div class="mt-3 bg-white dark:bg-gray-700 border-2 border-china-gold/30 rounded-xl p-3 shadow-sm relative overflow-hidden z-10 box-border">
+                <div class="text-center text-[10px] sm:text-[11px] font-bold text-china-gray dark:text-gray-300 uppercase tracking-wider mb-0.5 truncate" id="avg-title">กำไรเฉลี่ยสุทธิ</div>
+                <div class="text-center text-2xl sm:text-3xl font-extrabold mb-2 text-china-red dark:text-china-gold drop-shadow-sm truncate px-1" id="avg-result">0.00%</div>
                 
-                <div class="text-center text-xs sm:text-[13px] text-china-gray dark:text-gray-300 mb-3 leading-relaxed bg-china-cream dark:bg-gray-800 py-2 px-2.5 rounded-lg border border-china-gold/20">
-                    ยอดรวมสุทธิ: <span class="font-bold text-china-dark dark:text-white text-sm" id="net-total-result">0.00</span> บาท<br>
-                    <span id="net-profit-label-text">กำไรสุทธิ</span>: <span class="font-bold text-china-red dark:text-china-gold text-sm" id="net-profit-result">0.00</span> บาท
+                <div class="text-center text-xs text-china-gray dark:text-gray-300 mb-2.5 leading-relaxed bg-china-cream dark:bg-gray-800 py-2 px-2 rounded-lg border border-china-gold/20 overflow-hidden">
+                    <div class="truncate">ยอดรวมสุทธิ: <span class="font-bold text-china-dark dark:text-white text-xs sm:text-sm" id="net-total-result">0.00</span> บาท</div>
+                    <div class="truncate mt-0.5"><span id="net-profit-label-text">กำไรสุทธิ</span>: <span class="font-bold text-china-red dark:text-china-gold text-xs sm:text-sm" id="net-profit-result">0.00</span> บาท</div>
                 </div>
                 
                 <div class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-china-gray dark:text-gray-300 mb-2 pb-1 border-b border-china-gold/30 flex items-center gap-1">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    <svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                     รายละเอียดแต่ละรายการ
                 </div>
                 <div id="breakdown-list" class="text-china-gray text-xs space-y-2">
@@ -266,25 +266,25 @@
             </div>
 
             <!-- History App 2 -->
-            <div id="history-section" class="mt-4 pt-4 border-t-2 border-dashed border-china-gold/40 relative z-10 hidden">
-                <div class="flex justify-between items-center mb-3">
-                    <div class="text-xs sm:text-sm font-bold text-china-red dark:text-china-gold flex items-center gap-1.5">
-                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div id="history-section" class="mt-3 pt-3 border-t-2 border-dashed border-china-gold/40 relative z-10 hidden">
+                <div class="flex justify-between items-center mb-2.5">
+                    <div class="text-xs font-bold text-china-red dark:text-china-gold flex items-center gap-1 truncate pr-2">
+                        <svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                         ประวัติ Mix Margin
                     </div>
-                    <button onclick="clearAllHistoryApp2()" class="text-[10px] bg-red-50 dark:bg-red-900/30 text-red-500 border border-red-200 dark:border-red-800/50 px-2 py-0.5 rounded hover:bg-red-100 transition-colors flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    <button onclick="clearAllHistoryApp2()" class="text-[10px] bg-red-50 dark:bg-red-900/30 text-red-500 border border-red-200 dark:border-red-800/50 px-2 py-0.5 rounded hover:bg-red-100 transition-colors flex items-center gap-1 shrink-0">
+                        <svg class="w-3 h-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                         ลบทั้งหมด
                     </button>
                 </div>
-                <div id="history-list" class="space-y-2.5"></div>
+                <div id="history-list" class="space-y-2"></div>
             </div>
         </div>
 
     </div>
 
     <!-- Footer Credit -->
-    <div class="text-center text-[10px] text-china-lightgold/70 py-2">
+    <div class="text-center text-[10px] text-china-lightgold/70 py-1.5">
         LongBao Calculator &copy; 2026
     </div>
 
@@ -299,13 +299,13 @@
             if (appId === 'app1') {
                 app1Sec.classList.remove('hidden');
                 app2Sec.classList.add('hidden');
-                nav1.className = 'flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md';
-                nav2.className = 'flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50';
+                nav1.className = 'flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md';
+                nav2.className = 'flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50';
             } else {
                 app1Sec.classList.add('hidden');
                 app2Sec.classList.remove('hidden');
-                nav2.className = 'flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md';
-                nav1.className = 'flex-1 py-2 px-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50';
+                nav2.className = 'flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md';
+                nav1.className = 'flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 text-china-dark dark:text-china-lightgold hover:bg-china-lightgold/50';
             }
         }
 
@@ -320,7 +320,7 @@
             const icon = isError ? '⚠️' : '✅';
 
             toast.className = `toast-enter flex items-center gap-2 px-3 py-2.5 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg ${bgClass}`;
-            toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+            toast.innerHTML = `<span>${icon}</span> <span class="break-words">${message}</span>`;
             container.appendChild(toast);
 
             setTimeout(() => {
@@ -357,9 +357,9 @@
             document.getElementById('app1-profit-pct').innerText = `${profitPct.toFixed(2)}%`;
 
             if (profitVal < 0) {
-                profitValEl.className = "text-red-600 dark:text-red-400 font-bold";
+                profitValEl.className = "text-red-600 dark:text-red-400 font-bold break-all";
             } else {
-                profitValEl.className = "text-china-red dark:text-china-gold";
+                profitValEl.className = "text-china-red dark:text-china-gold break-all";
             }
 
             const donutPath = document.getElementById('app1-donut-path');
@@ -370,15 +370,15 @@
             if (profitPct >= 1) {
                 donutPath.setAttribute('class', 'text-green-500 transition-all duration-500');
                 statusEl.innerText = 'กำไรดี (≥1%)';
-                statusEl.className = 'font-bold text-green-600 dark:text-green-400';
+                statusEl.className = 'font-bold text-green-600 dark:text-green-400 truncate';
             } else if (profitPct >= 0) {
                 donutPath.setAttribute('class', 'text-amber-500 transition-all duration-500');
                 statusEl.innerText = 'กำไรต่ำ (0-0.99%)';
-                statusEl.className = 'font-bold text-amber-600 dark:text-amber-400';
+                statusEl.className = 'font-bold text-amber-600 dark:text-amber-400 truncate';
             } else {
                 donutPath.setAttribute('class', 'text-red-600 transition-all duration-500');
                 statusEl.innerText = 'ขาดทุน (<0%)';
-                statusEl.className = 'font-bold text-red-600 dark:text-red-400';
+                statusEl.className = 'font-bold text-red-600 dark:text-red-400 truncate';
             }
 
             app1CalculatedData = {
@@ -410,18 +410,18 @@
             const pctColor = isNeg ? 'text-red-600 dark:text-red-400' : 'text-china-red dark:text-china-gold';
 
             const item = document.createElement('div');
-            item.className = 'history-card bg-white dark:bg-gray-700 p-2.5 rounded-lg border border-china-gold/30 text-xs flex justify-between items-center relative';
+            item.className = 'history-card bg-white dark:bg-gray-700 p-2.5 rounded-lg border border-china-gold/30 text-xs flex justify-between items-center relative overflow-hidden';
             item.innerHTML = `
-                <div class="pr-6">
-                    <strong class="text-china-dark dark:text-white">${app1CalculatedData.name}</strong>
-                    <div class="text-[10px] text-china-gray dark:text-gray-300">
+                <div class="pr-6 min-w-0 flex-1">
+                    <strong class="text-china-dark dark:text-white truncate block">${app1CalculatedData.name}</strong>
+                    <div class="text-[10px] text-china-gray dark:text-gray-300 truncate">
                         ราคาขาย: ${app1CalculatedData.sellPrice.toFixed(2)} ฿ | ทุน+Vat: ${app1CalculatedData.costVat.toFixed(2)} | ทุน A1: ${app1CalculatedData.costA1.toFixed(2)}
                     </div>
                 </div>
-                <div class="text-right pr-6">
-                    <span class="font-extrabold ${pctColor} block">GP ${app1CalculatedData.profitPct.toFixed(2)}%</span>
+                <div class="text-right shrink-0 pl-1">
+                    <span class="font-extrabold ${pctColor} block text-xs">GP ${app1CalculatedData.profitPct.toFixed(2)}%</span>
                 </div>
-                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('app1-history-list').children.length === 0) document.getElementById('app1-history-section').classList.add('hidden');" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="ลบรายการนี้">
+                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('app1-history-list').children.length === 0) document.getElementById('app1-history-section').classList.add('hidden');" class="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="ลบรายการนี้">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
             `;
@@ -455,15 +455,15 @@
             row.className = 'item-grid row opacity-0 transform -translate-y-2 transition-all duration-300';
             
             row.innerHTML = `
-                <input type="text" placeholder="สินค้า ${count}" class="name w-full px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="calcApp2()">
-                <input type="number" min="0" placeholder="0" class="qty w-full px-1.5 sm:px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red text-center" oninput="if(this.value<0)this.value=0; calcApp2()">
-                <input type="number" min="0" placeholder="0" class="price w-full px-1.5 sm:px-2 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="if(this.value<0)this.value=0; calcApp2()">
+                <input type="text" placeholder="สินค้า ${count}" class="name w-full px-1.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()">
+                <input type="number" min="0" placeholder="0" class="qty w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red text-center box-border" oninput="if(this.value<0)this.value=0; calcApp2()">
+                <input type="number" min="0" placeholder="0" class="price w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="if(this.value<0)this.value=0; calcApp2()">
                 <div class="relative flex items-center">
-                    <input type="number" placeholder="0" class="profit w-full pl-1.5 pr-4 py-1.5 sm:py-2 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red" oninput="calcApp2()">
+                    <input type="number" placeholder="0" class="profit w-full pl-1 pr-3.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()">
                     <span class="absolute right-1 text-china-gray text-[9px] pointer-events-none">%</span>
                 </div>
-                <button class="w-[30px] h-[30px] sm:w-[34px] sm:h-[34px] flex items-center justify-center border border-china-gold/40 rounded-lg text-china-gray hover:bg-red-50 hover:text-china-red mx-auto" onclick="removeRowApp2(this)" title="ลบแถว">
-                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                <button class="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] flex items-center justify-center border border-china-gold/40 rounded-lg text-china-gray hover:bg-red-50 hover:text-china-red mx-auto shrink-0" onclick="removeRowApp2(this)" title="ลบแถว">
+                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
                 </button>
             `;
             list.appendChild(row);
@@ -514,14 +514,15 @@
             const avgResultEl = document.getElementById('avg-result');
             const avgTitleEl = document.getElementById('avg-title');
             
-            avgResultEl.innerText = `${Math.abs(avgGpPct).toFixed(2)}%`;
+            // แก้ไขตรงนี้: ใส่เครื่องหมายลบหน้า % หากค่าติดลบ
+            avgResultEl.innerText = `${avgGpPct < 0 ? '-' : ''}${Math.abs(avgGpPct).toFixed(2)}%`;
             
             if (avgGpPct < 0) {
                 avgTitleEl.innerText = 'ขาดทุนเฉลี่ยสุทธิ';
-                avgResultEl.className = "text-center text-3xl sm:text-4xl font-extrabold mb-2.5 text-red-600 dark:text-red-400 drop-shadow-sm";
+                avgResultEl.className = "text-center text-2xl sm:text-3xl font-extrabold mb-2 text-red-600 dark:text-red-400 drop-shadow-sm truncate px-1";
             } else {
                 avgTitleEl.innerText = 'กำไรเฉลี่ยสุทธิ';
-                avgResultEl.className = "text-center text-3xl sm:text-4xl font-extrabold mb-2.5 text-china-red dark:text-china-gold drop-shadow-sm";
+                avgResultEl.className = "text-center text-2xl sm:text-3xl font-extrabold mb-2 text-china-red dark:text-china-gold drop-shadow-sm truncate px-1";
             }
 
             const netProfitEl = document.getElementById('net-profit-result');
@@ -530,11 +531,11 @@
             if (netProfit < 0) {
                 netProfitLabelEl.innerText = 'ขาดทุนสุทธิ';
                 netProfitEl.innerText = Math.abs(netProfit).toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                netProfitEl.className = "font-bold text-red-600 dark:text-red-400 text-sm";
+                netProfitEl.className = "font-bold text-red-600 dark:text-red-400 text-xs sm:text-sm";
             } else {
                 netProfitLabelEl.innerText = 'กำไรสุทธิ';
                 netProfitEl.innerText = netProfit.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                netProfitEl.className = "font-bold text-china-red dark:text-china-gold text-sm";
+                netProfitEl.className = "font-bold text-china-red dark:text-china-gold text-xs sm:text-sm";
             }
 
             document.getElementById('net-total-result').innerText = netTotalSales.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -557,13 +558,13 @@
                     const gpColor = item.gp < 0 ? 'text-red-600 dark:text-red-400' : 'text-china-red dark:text-china-gold';
 
                     html += `
-                        <div class="flex justify-between items-center bg-white dark:bg-gray-800 p-2 rounded border border-china-gold/20">
-                            <div class="flex-1 pr-2">
-                                <div class="font-bold text-china-dark dark:text-white truncate">${item.name} <span class="text-[10px] text-china-red dark:text-china-gold bg-china-lightgold/30 px-1 py-0.5 rounded ml-0.5">สัดส่วน ${proportion.toFixed(1)}%</span></div>
-                                <div class="text-[10px] text-china-gray dark:text-gray-400 mt-0.5">จำนวน ${item.qty} x ${item.price} = ยอดขาย ${item.sales.toLocaleString()} บ.</div>
+                        <div class="flex justify-between items-center bg-white dark:bg-gray-800 p-2 rounded border border-china-gold/20 gap-2">
+                            <div class="min-w-0 flex-1">
+                                <div class="font-bold text-china-dark dark:text-white truncate">${item.name} <span class="text-[9px] text-china-red dark:text-china-gold bg-china-lightgold/30 px-1 py-0.5 rounded ml-0.5">สัดส่วน ${proportion.toFixed(1)}%</span></div>
+                                <div class="text-[10px] text-china-gray dark:text-gray-400 mt-0.5 truncate">จำนวน ${item.qty} x ${item.price} = ยอดขาย ${item.sales.toLocaleString()} บ.</div>
                             </div>
                             <div class="text-right shrink-0">
-                                <div class="font-bold ${gpColor}">GP ${item.gp}%</div>
+                                <div class="font-bold ${gpColor} text-xs">GP ${item.gp}%</div>
                                 <div class="text-[10px] ${profitColor}">${profitText}</div>
                             </div>
                         </div>
@@ -572,9 +573,9 @@
                 
                 if(couponVal > 0) {
                     html += `
-                        <div class="flex justify-between items-center bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-800/30 mt-1.5">
-                            <div class="text-red-600 dark:text-red-400 font-bold text-xs">หักคูปองส่วนลด</div>
-                            <div class="text-red-600 dark:text-red-400 font-bold text-xs">-${couponVal} บ.</div>
+                        <div class="flex justify-between items-center bg-red-50 dark:bg-red-900/20 p-2 rounded border border-red-200 dark:border-red-800/30 mt-1">
+                            <div class="text-red-600 dark:text-red-400 font-bold text-xs truncate">หักคูปองส่วนลด</div>
+                            <div class="text-red-600 dark:text-red-400 font-bold text-xs shrink-0">-${couponVal} บ.</div>
                         </div>
                     `;
                 }
@@ -613,17 +614,17 @@
                 const gpColor = item.gp < 0 ? 'text-red-600 dark:text-red-400' : 'text-china-red dark:text-china-gold';
 
                 return `
-                    <div class="mb-2 border-b border-gray-100 dark:border-gray-700 pb-2 last:border-0 last:pb-0">
-                        <div class="flex justify-between items-start mb-0.5">
-                            <div class="font-bold text-xs text-china-dark dark:text-white truncate pr-2">
+                    <div class="mb-2 border-b border-gray-100 dark:border-gray-700 pb-1.5 last:border-0 last:pb-0">
+                        <div class="flex justify-between items-start mb-0.5 gap-1">
+                            <div class="font-bold text-xs text-china-dark dark:text-white truncate min-w-0 flex-1">
                                 ${item.name} 
-                                <span class="text-[10px] text-china-red dark:text-china-gold ml-1 font-extrabold bg-china-lightgold/30 px-1 rounded">(สัดส่วน ${item.proportion.toFixed(1)}%)</span>
+                                <span class="text-[9px] text-china-red dark:text-china-gold ml-1 font-extrabold bg-china-lightgold/30 px-1 rounded inline-block">(สัดส่วน ${item.proportion.toFixed(1)}%)</span>
                             </div>
                             <div class="text-xs font-bold ${gpColor} shrink-0">GP ${item.gp}%</div>
                         </div>
-                        <div class="text-[10px] text-china-gray dark:text-gray-400 flex justify-between bg-gray-50 dark:bg-gray-800/50 p-1 rounded items-center">
-                            <span>จำนวน: ${item.qty} X ราคา: ${item.price} = ยอดขาย: ${item.sales.toLocaleString()} ฿</span>
-                            <span class="font-bold ${itemColorClass} text-xs">${itemText}</span>
+                        <div class="text-[10px] text-china-gray dark:text-gray-400 flex justify-between bg-gray-50 dark:bg-gray-800/50 p-1 rounded items-center gap-1">
+                            <span class="truncate">จำนวน: ${item.qty} X ราคา: ${item.price} = ยอดขาย: ${item.sales.toLocaleString()} ฿</span>
+                            <span class="font-bold ${itemColorClass} text-[10px] shrink-0">${itemText}</span>
                         </div>
                     </div>
                 `;
@@ -633,10 +634,10 @@
             const netProfitDisplay = isNetNeg 
                 ? `ขาดทุน ${Math.abs(lastCalculation.netProfit).toLocaleString('th-TH', {minimumFractionDigits: 2})} ฿`
                 : `กำไร +${lastCalculation.netProfit.toLocaleString('th-TH', {minimumFractionDigits: 2})} ฿`;
-            const netProfitColorClass = isNetNeg ? 'text-red-600 dark:text-red-400 font-extrabold text-sm' : 'text-green-600 font-extrabold text-sm';
+            const netProfitColorClass = isNetNeg ? 'text-red-600 dark:text-red-400 font-extrabold text-xs sm:text-sm' : 'text-green-600 font-extrabold text-xs sm:text-sm';
 
             const itemCard = document.createElement('div');
-            itemCard.className = 'history-card bg-white dark:bg-gray-800 p-3 rounded-lg border border-china-gold/40 shadow-sm relative overflow-hidden';
+            itemCard.className = 'history-card bg-white dark:bg-gray-800 p-2.5 rounded-lg border border-china-gold/40 shadow-sm relative overflow-hidden';
             
             itemCard.innerHTML = `
                 <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-china-darkred to-china-red"></div>
@@ -645,22 +646,22 @@
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
                 
-                <div class="pl-2 mb-2.5 pr-6">
+                <div class="pl-2 mb-2 pr-6 min-w-0">
                     ${itemsHtml}
                 </div>
                 
                 ${lastCalculation.couponVal > 0 ? `
-                <div class="pl-2 flex justify-between items-center text-xs text-red-500 mb-2.5 border-t border-dashed border-gray-200 dark:border-gray-600 pt-1.5 font-semibold pr-1">
-                    <span>คูปองส่วนลดที่ใช้</span>
-                    <span>-${lastCalculation.couponVal} ฿</span>
+                <div class="pl-2 flex justify-between items-center text-xs text-red-500 mb-2 border-t border-dashed border-gray-200 dark:border-gray-600 pt-1.5 font-semibold pr-1">
+                    <span class="truncate">คูปองส่วนลดที่ใช้</span>
+                    <span class="shrink-0">-${lastCalculation.couponVal} ฿</span>
                 </div>` : ''}
 
-                <div class="bg-china-cream dark:bg-gray-900 p-2.5 rounded-lg flex justify-between items-center ml-2 border border-china-gold/30">
-                    <div>
-                        <div class="text-[11px] text-china-gray mb-0.5">ยอดรวมสุทธิ: <span class="font-bold text-china-dark dark:text-white text-xs sm:text-sm">${lastCalculation.netTotalSales.toLocaleString('th-TH', {minimumFractionDigits: 2})}</span> ฿</div>
-                        <div class="text-[11px] text-china-gray">% GP สุทธิ: <span class="font-bold text-china-red dark:text-china-gold text-xs sm:text-sm">${lastCalculation.avgGpPct.toFixed(2)}%</span></div>
+                <div class="bg-china-cream dark:bg-gray-900 p-2 rounded-lg flex justify-between items-center ml-2 border border-china-gold/30 gap-2">
+                    <div class="min-w-0 flex-1">
+                        <div class="text-[10px] sm:text-[11px] text-china-gray mb-0.5 truncate">ยอดรวมสุทธิ: <span class="font-bold text-china-dark dark:text-white text-xs">${lastCalculation.netTotalSales.toLocaleString('th-TH', {minimumFractionDigits: 2})}</span> ฿</div>
+                        <div class="text-[10px] sm:text-[11px] text-china-gray truncate">% GP สุทธิ: <span class="font-bold text-china-red dark:text-china-gold text-xs">${lastCalculation.avgGpPct < 0 ? '-' : ''}${Math.abs(lastCalculation.avgGpPct).toFixed(2)}%</span></div>
                     </div>
-                    <div class="text-right flex flex-col justify-center items-end">
+                    <div class="text-right shrink-0">
                         <span class="block ${netProfitColorClass}">${netProfitDisplay}</span>
                     </div>
                 </div>
