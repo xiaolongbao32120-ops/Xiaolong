@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>หลงเปา - ระบบคำนวณต้นทุน & Mix Margin</title>
     
-    <!-- PWA & Favicon -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7a1218">
     <link rel="icon" type="image/png" sizes="192x192" href="8888.jpg">
     <link rel="apple-touch-icon" href="8888.jpg">
     
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- External Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
@@ -81,13 +78,11 @@
 
 <body class="bg-gradient-to-br from-china-darkred to-china-red min-h-screen py-3 px-2 text-china-dark antialiased dark:from-gray-900 dark:to-china-dark transition-colors duration-300 flex flex-col justify-between overflow-x-hidden">
 
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-3 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 w-full max-w-sm px-3"></div>
 
     <div class="w-full max-w-[480px] sm:max-w-[520px] mx-auto my-auto box-border">
         
-       <!-- App Switcher Navigation -->
-        <div class="mb-3 bg-china-cream/90 dark:bg-gray-800/90 p-1.5 rounded-2xl shadow-lg border border-china-gold/40 flex items-center justify-between gap-1 backdrop-blur-sm">
+       <div class="mb-3 bg-china-cream/90 dark:bg-gray-800/90 p-1.5 rounded-2xl shadow-lg border border-china-gold/40 flex items-center justify-between gap-1 backdrop-blur-sm">
             <button id="nav-app1" onclick="switchApp('app1')" class="flex-1 py-2 px-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-1 bg-gradient-to-r from-china-darkred to-china-red text-white shadow-md">
                 🏮คำนวณหา GP🏮
             </button>
@@ -99,7 +94,6 @@
             </button>
         </div>
 
-        <!-- APP 1: คำนวณต้นทุน และ ทุน A1 -->
         <div id="app1-section" class="bg-china-cream dark:bg-gray-800 p-3.5 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all">
             <div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-china-gold rounded-tl-xl opacity-30 pointer-events-none"></div>
             <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-china-gold rounded-tr-xl opacity-30 pointer-events-none"></div>
@@ -110,7 +104,6 @@
                 </h2>
             </div>
 
-            <!-- Form 1: Calculate Cost & A1 -->
             <div class="space-y-2 bg-white dark:bg-gray-700/50 p-3 rounded-xl border border-china-gold/30">
                 <h3 class="text-xs font-bold text-china-red dark:text-china-gold uppercase tracking-wider">1. คำนวณต้นทุน และ ทุน A1</h3>
                 <div>
@@ -140,7 +133,6 @@
                 </div>
             </div>
 
-            <!-- Form 2: Selling Price & Profit Donut -->
             <div class="mt-3 space-y-2 bg-white dark:bg-gray-700/50 p-3 rounded-xl border border-china-gold/30">
                 <h3 class="text-xs font-bold text-china-red dark:text-china-gold uppercase tracking-wider">2. คำนวณ % กำไรจากการขายจริง</h3>
                 <div>
@@ -148,7 +140,6 @@
                     <input type="number" id="app1-sell-price" placeholder="0.00" oninput="if(this.value<0)this.value=0; calcApp1()" class="w-full px-2.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-800 dark:text-white focus:outline-none focus:border-china-red box-border">
                 </div>
 
-                <!-- Donut Chart Display -->
                 <div class="flex items-center justify-around pt-1 gap-2">
                     <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center shrink-0">
                         <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
@@ -166,18 +157,22 @@
                 </div>
             </div>
 
-            <!-- Actions -->
             <div class="flex gap-2 mt-3">
                 <button onclick="clearApp1()" class="flex-1 bg-china-lightgold text-china-dark border border-china-gold/50 py-2 rounded-lg text-xs font-semibold hover:bg-[#f6e19c]">เคลียร์ข้อมูล</button>
                 <button onclick="saveHistoryApp1()" class="flex-1 bg-gradient-to-r from-china-darkred to-china-red text-white py-2 rounded-lg text-xs font-semibold shadow-glow hover:opacity-90">บันทึกประวัติ</button>
             </div>
 
-            <!-- Capture Button -->
+            <div class="mt-2">
+                <button onclick="sendToMixMargin()" class="w-full bg-china-gold text-china-dark py-2 rounded-lg text-xs font-semibold hover:bg-[#c9a330] transition-colors flex items-center justify-center gap-1.5">
+                    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
+                    ส่งไป Mix Margin
+                </button>
+            </div>
+
             <div class="mt-2">
                 <button onclick="captureApp1()" class="w-full bg-amber-600 text-white py-2 rounded-lg text-xs font-semibold hover:bg-amber-700 transition-colors">📸 บันทึกเป็นรูป</button>
             </div>
 
-            <!-- History App 1 -->
             <div id="app1-history-section" class="mt-3 pt-3 border-t border-china-gold/30 hidden relative">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="text-xs font-bold text-china-red dark:text-china-gold">ประวัติการคำนวณต้นทุน</h3>
@@ -190,7 +185,6 @@
             </div>
         </div>
 
-        <!-- APP 2: หลงเปามิกซ์ Mix Margin -->
         <div id="app2-section" class="bg-china-cream dark:bg-gray-800 p-3.5 sm:p-6 rounded-2xl shadow-2xl border border-china-gold/40 relative overflow-hidden transition-all hidden">
             <div class="absolute top-0 left-0 w-12 h-12 border-t-4 border-l-4 border-china-gold rounded-tl-xl opacity-30 pointer-events-none"></div>
             <div class="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-china-gold rounded-tr-xl opacity-30 pointer-events-none"></div>
@@ -246,7 +240,6 @@
                 <button class="flex-1 bg-gradient-to-r from-china-darkred to-china-red text-white py-2 rounded-lg text-xs font-semibold shadow-glow hover:opacity-90" onclick="saveHistoryApp2()">บันทึกข้อมูล</button>
             </div>
 
-            <!-- Results Section App 2 -->
             <div class="mt-3 bg-white dark:bg-gray-700 border-2 border-china-gold/30 rounded-xl p-3 shadow-sm relative overflow-hidden z-10 box-border">
                 <div class="text-center text-[10px] sm:text-[11px] font-bold text-china-gray dark:text-gray-300 uppercase tracking-wider mb-0.5 truncate" id="avg-title">กำไรเฉลี่ยสุทธิ</div>
                 <div class="text-center text-2xl sm:text-3xl font-extrabold mb-2 text-china-red dark:text-china-gold drop-shadow-sm truncate px-1" id="avg-result">0.00%</div>
@@ -265,7 +258,6 @@
                 </div>
             </div>
 
-            <!-- History App 2 -->
             <div id="history-section" class="mt-3 pt-3 border-t-2 border-dashed border-china-gold/40 relative z-10 hidden">
                 <div class="flex justify-between items-center mb-2.5">
                     <div class="text-xs font-bold text-china-red dark:text-china-gold flex items-center gap-1 truncate pr-2">
@@ -283,13 +275,11 @@
 
     </div>
 
-    <!-- Footer Credit -->
     <div class="text-center text-[10px] text-china-lightgold/70 py-1.5">
         LongBao Calculator &copy; 2026
     </div>
 
     <script>
-        // Global Navigation & UI
         function switchApp(appId) {
             const app1Sec = document.getElementById('app1-section');
             const app2Sec = document.getElementById('app2-section');
@@ -328,6 +318,44 @@
                 toast.classList.add('toast-exit');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        }
+
+        // ================= UPDATED FUNCTIONS FOR SHARING =================
+        function sendToMixMargin() {
+            if (!app1CalculatedData || app1CalculatedData.decPrice === 0 || app1CalculatedData.sellPrice === 0) {
+                showToast('กรุณากรอกข้อมูลสินค้า ราคาขายจริง และคำนวณก่อนส่ง', true);
+                return;
+            }
+            
+            addNewRowFromApp1(app1CalculatedData.name, app1CalculatedData.sellPrice, app1CalculatedData.profitPct);
+            switchApp('app2');
+            showToast('ส่งข้อมูลไปยัง Mix Margin เรียบร้อยแล้ว');
+        }
+
+        function addNewRowFromApp1(name, price, gp) {
+            const list = document.getElementById('item-list');
+            const firstRow = list.firstElementChild;
+            
+            const firstRowName = firstRow.querySelector('.name').value;
+            const firstRowQty = firstRow.querySelector('.qty').value;
+            const firstRowPrice = firstRow.querySelector('.price').value;
+            const firstRowProfit = firstRow.querySelector('.profit').value;
+            
+            const isFirstRowEmpty = !firstRowName && !firstRowQty && !firstRowPrice && !firstRowProfit;
+
+            let targetRow;
+            if (isFirstRowEmpty) {
+                targetRow = firstRow;
+            } else {
+                addRowApp2();
+                targetRow = list.lastElementChild;
+            }
+            
+            targetRow.querySelector('.name').value = name;
+            targetRow.querySelector('.price').value = price.toFixed(2);
+            targetRow.querySelector('.profit').value = gp.toFixed(2);
+            
+            calcApp2();
         }
 
         // ================= APP 1 LOGIC =================
@@ -514,7 +542,6 @@
             const avgResultEl = document.getElementById('avg-result');
             const avgTitleEl = document.getElementById('avg-title');
             
-            // แก้ไขตรงนี้: ใส่เครื่องหมายลบหน้า % หากค่าติดลบ
             avgResultEl.innerText = `${avgGpPct < 0 ? '-' : ''}${Math.abs(avgGpPct).toFixed(2)}%`;
             
             if (avgGpPct < 0) {
