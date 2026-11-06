@@ -302,7 +302,6 @@
 
         function toggleDarkMode() {
             document.documentElement.classList.toggle('dark');
-            triggerAutoSave(); // บันทึกสถานะธีมทันที
         }
 
         function showToast(message, isError = false) {
@@ -332,7 +331,6 @@
             addNewRowFromApp1(app1CalculatedData.name, app1CalculatedData.sellPrice, app1CalculatedData.profitPct);
             switchApp('app2');
             showToast('ส่งข้อมูลไปยัง Mix Margin เรียบร้อยแล้ว');
-            triggerAutoSave();
         }
 
         function addNewRowFromApp1(name, price, gp) {
@@ -425,7 +423,6 @@
             document.getElementById('app1-sell-price').value = '';
             calcApp1();
             showToast('เคลียร์ข้อมูลต้นทุนเรียบร้อย');
-            triggerAutoSave();
         }
 
         function saveHistoryApp1() {
@@ -453,20 +450,18 @@
                 <div class="text-right shrink-0 pl-1">
                     <span class="font-extrabold ${pctColor} block text-xs">GP ${app1CalculatedData.profitPct.toFixed(2)}%</span>
                 </div>
-                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('app1-history-list').children.length === 0) document.getElementById('app1-history-section').classList.add('hidden'); triggerAutoSave();" class="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="ลบรายการนี้">
+                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('app1-history-list').children.length === 0) document.getElementById('app1-history-section').classList.add('hidden');" class="absolute right-1 top-1/2 transform -translate-y-1/2 text-gray-300 hover:text-red-500 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors" title="ลบรายการนี้">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
             `;
             list.prepend(item);
             showToast('บันทึกประวัติสำเร็จ');
-            triggerAutoSave();
         }
 
         function clearAllHistoryApp1() {
             document.getElementById('app1-history-list').innerHTML = '';
             document.getElementById('app1-history-section').classList.add('hidden');
             showToast('ลบประวัติคำนวณต้นทุนทั้งหมดแล้ว');
-            triggerAutoSave();
         }
 
         function captureApp1() {
@@ -505,7 +500,6 @@
             requestAnimationFrame(() => {
                 row.classList.remove('opacity-0', '-translate-y-2');
             });
-            triggerAutoSave();
         }
 
         function removeRowApp2(btn) {
@@ -514,7 +508,6 @@
             setTimeout(() => {
                 row.remove();
                 calcApp2();
-                triggerAutoSave();
             }, 300);
         }
 
@@ -657,6 +650,20 @@
                             </div>
                             <div class="text-xs font-bold ${gpColor} shrink-0">GP ${item.gp}%</div>
                         </div>
+                        ${(() => {
+                            const discount = lastCalculation.couponVal * (item.proportion / 100);
+                            const netPrice = item.qty > 0 ? (item.sales - discount) / item.qty : 0;
+                            if (lastCalculation.couponVal > 0) {
+                                return `<div class="text-[10px] flex justify-between items-center mb-1.5 px-1">
+                                    <span class="text-china-gray dark:text-gray-400">ราคา/ชิ้น (หลังหักส่วนลด):</span>
+                                    <span class="font-bold text-china-red dark:text-china-gold text-[11px]">${netPrice.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿</span>
+                                </div>`;
+                            }
+                            return `<div class="text-[10px] flex justify-between items-center mb-1.5 px-1">
+                                <span class="text-china-gray dark:text-gray-400">ราคา/ชิ้น:</span>
+                                <span class="font-bold text-china-dark dark:text-gray-300 text-[11px]">${item.price.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2})} ฿</span>
+                            </div>`;
+                        })()}
                         <div class="text-[10px] text-china-gray dark:text-gray-400 flex justify-between bg-gray-50 dark:bg-gray-800/50 p-1 rounded items-center gap-1">
                             <span class="truncate">จำนวน: ${item.qty} X ราคา: ${item.price} = ยอดขาย: ${item.sales.toLocaleString()} ฿</span>
                             <span class="font-bold ${itemColorClass} text-[10px] shrink-0">${itemText}</span>
@@ -677,7 +684,7 @@
             itemCard.innerHTML = `
                 <div class="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-china-darkred to-china-red"></div>
                 
-                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('history-list').children.length === 0) document.getElementById('history-section').classList.add('hidden'); showToast('ลบรายการประวัติแล้ว'); triggerAutoSave();" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 z-10 p-1 bg-white dark:bg-gray-800 rounded-full hover:bg-red-50 transition-colors shadow-sm" title="ลบรายการนี้">
+                <button onclick="this.closest('.history-card').remove(); if(document.getElementById('history-list').children.length === 0) document.getElementById('history-section').classList.add('hidden'); showToast('ลบรายการประวัติแล้ว');" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 z-10 p-1 bg-white dark:bg-gray-800 rounded-full hover:bg-red-50 transition-colors shadow-sm" title="ลบรายการนี้">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                 </button>
                 
@@ -704,14 +711,12 @@
             
             list.prepend(itemCard);
             showToast('บันทึกประวัติ Mix Margin เรียบร้อย');
-            triggerAutoSave();
         }
 
         function clearAllHistoryApp2() {
             document.getElementById('history-list').innerHTML = '';
             document.getElementById('history-section').classList.add('hidden');
             showToast('ลบประวัติ Mix Margin ทั้งหมดแล้ว');
-            triggerAutoSave();
         }
 
         function clearAllApp2() {
@@ -721,129 +726,7 @@
             addRowApp2();
             calcApp2();
             showToast('ล้างข้อมูล Mix Margin เรียบร้อย');
-            triggerAutoSave();
         }
-
-        // ================= AUTO SAVE & RESTORE (LocalStorage) =================
-        function saveStateToLocal() {
-            const app1State = {
-                name: document.getElementById('app1-name').value,
-                decPrice: document.getElementById('app1-declared-price').value,
-                gpPct: document.getElementById('app1-gp-pct').value,
-                sellPrice: document.getElementById('app1-sell-price').value,
-                historyHTML: document.getElementById('app1-history-list').innerHTML,
-                historyVisible: !document.getElementById('app1-history-section').classList.contains('hidden')
-            };
-
-            const app2Rows = [];
-            document.querySelectorAll('#item-list .row').forEach(row => {
-                app2Rows.push({
-                    name: row.querySelector('.name').value,
-                    qty: row.querySelector('.qty').value,
-                    price: row.querySelector('.price').value,
-                    profit: row.querySelector('.profit').value
-                });
-            });
-            
-            const app2State = {
-                rows: app2Rows,
-                coupon: document.getElementById('coupon-select').value,
-                historyHTML: document.getElementById('history-list').innerHTML,
-                historyVisible: !document.getElementById('history-section').classList.contains('hidden')
-            };
-
-            const activeApp = !document.getElementById('app1-section').classList.contains('hidden') ? 'app1' : 'app2';
-            const isDarkMode = document.documentElement.classList.contains('dark');
-
-            localStorage.setItem('longbao_data', JSON.stringify({
-                app1: app1State,
-                app2: app2State,
-                activeApp: activeApp,
-                isDarkMode: isDarkMode
-            }));
-        }
-
-        function loadStateFromLocal() {
-            const saved = localStorage.getItem('longbao_data');
-            if (!saved) return;
-            
-            try {
-                const state = JSON.parse(saved);
-                
-                if(state.isDarkMode) {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-
-                if(state.app1) {
-                    document.getElementById('app1-name').value = state.app1.name || '';
-                    document.getElementById('app1-declared-price').value = state.app1.decPrice || '';
-                    document.getElementById('app1-gp-pct').value = state.app1.gpPct || '';
-                    document.getElementById('app1-sell-price').value = state.app1.sellPrice || '';
-                    
-                    document.getElementById('app1-history-list').innerHTML = state.app1.historyHTML || '';
-                    if(state.app1.historyVisible && state.app1.historyHTML.trim() !== '') {
-                        document.getElementById('app1-history-section').classList.remove('hidden');
-                    }
-                }
-
-                if(state.app2) {
-                    document.getElementById('coupon-select').value = state.app2.coupon || '0';
-                    
-                    const list = document.getElementById('item-list');
-                    if (state.app2.rows && state.app2.rows.length > 0) {
-                        list.innerHTML = ''; 
-                        state.app2.rows.forEach((r, idx) => {
-                            const row = document.createElement('div');
-                            row.className = 'item-grid row transition-all duration-300';
-                            row.innerHTML = `
-                                <input type="text" placeholder="สินค้า ${idx+1}" class="name w-full px-1.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()" value="${r.name}">
-                                <input type="number" min="0" placeholder="0" class="qty w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red text-center box-border" oninput="if(this.value<0)this.value=0; calcApp2()" value="${r.qty}">
-                                <input type="number" min="0" placeholder="0" class="price w-full px-1 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="if(this.value<0)this.value=0; calcApp2()" value="${r.price}">
-                                <div class="relative flex items-center">
-                                    <input type="number" placeholder="0" class="profit w-full pl-1 pr-3.5 py-1.5 border border-china-gold/40 rounded-lg text-xs bg-white dark:bg-gray-700 dark:text-white focus:outline-none focus:border-china-red box-border" oninput="calcApp2()" value="${r.profit}">
-                                    <span class="absolute right-1 text-china-gray text-[9px] pointer-events-none">%</span>
-                                </div>
-                                <button class="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] flex items-center justify-center border border-china-gold/40 rounded-lg text-china-gray hover:bg-red-50 hover:text-china-red mx-auto shrink-0" onclick="removeRowApp2(this)" title="ลบแถว">
-                                    <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
-                                </button>
-                            `;
-                            list.appendChild(row);
-                        });
-                    }
-                    
-                    document.getElementById('history-list').innerHTML = state.app2.historyHTML || '';
-                    if(state.app2.historyVisible && state.app2.historyHTML.trim() !== '') {
-                        document.getElementById('history-section').classList.remove('hidden');
-                    }
-                }
-
-                calcApp1();
-                calcApp2();
-
-                if(state.activeApp) {
-                    switchApp(state.activeApp);
-                }
-                
-            } catch(e) {
-                console.error("Failed to load saved data", e);
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', loadStateFromLocal);
-        window.addEventListener('beforeunload', saveStateToLocal);
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') saveStateToLocal();
-        });
-
-        let saveTimeout;
-        const triggerAutoSave = () => {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(saveStateToLocal, 500); 
-        };
-        document.addEventListener('input', triggerAutoSave);
-        document.addEventListener('click', triggerAutoSave);
     </script>
 </body>
 </html>
